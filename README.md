@@ -48,16 +48,20 @@ python3 -m http.server 8000    # افتحوا http://localhost:8000
 
 > ملاحظة: issues/ مبنية وموجودة في الـ repo، فما يحتاج Vercel يشغّل Python. شغّلوا build.py قبل كل push.
 
-## الإيميل التلقائي (Resend)
+## الإيميل التلقائي
 
-1. سجلوا في [resend.com](https://resend.com) ← Domains ← أضيفوا دومينكم وحطوا سجلات DNS (SPF/DKIM) اللي يعطيكم.
-2. API Keys ← أنشئوا مفتاح.
+### الطريقة 1: من إيميلكم في Gmail (الأسهل)
+1. فعّلوا التحقق بخطوتين في حساب Google: myaccount.google.com ← Security ← 2-Step Verification.
+2. افتحوا myaccount.google.com/apppasswords وأنشئوا App Password باسم «جرعة»، وانسخوا الـ 16 حرف.
 3. في GitHub repo ← Settings ← Secrets and variables ← Actions:
-   - **Secret:** `RESEND_API_KEY`
-   - **Variables:** `EMAIL_FROM` = `جرعة <hello@yourdomain.com>` · `EMAIL_TO` = إيميلاتكم مفصولة بفاصلة · `SITE_URL` = `https://jur3a.yourdomain.com`
-4. خلاص: كل ما يتغير issues.json على main، الـ workflow ينتظر النشر 90 ثانية ويرسل إيميل فيه صورة الغلاف والعنوان والرابط. تقدرون تجربونه يدوياً من تبويب Actions ← Email new issue ← Run workflow.
+   - **Secret:** `SMTP_PASSWORD` = الـ App Password
+   - **Variables:** `SMTP_USER` = إيميلكم في Gmail · `EMAIL_TO` = الإيميلات اللي تبون ترسلون لها مفصولة بفاصلة · `SITE_URL` = رابط الموقع
+4. جربوه من تبويب Actions ← Email new issue ← Run workflow.
 
-> للمشتركين بأعداد كبيرة (مع رابط إلغاء اشتراك وصفحة تسجيل) الأفضل تستخدمون Resend Audiences/Broadcasts أو خدمة نشرات مثل Buttondown، بدل قائمة EMAIL_TO.
+الإيميل يطلع باسم «جرعة» من إيميلكم، والمستلمين في BCC فما أحد يشوف إيميل الثاني. حد Gmail تقريباً 500 مستلم باليوم.
+
+### الطريقة 2: من دومينكم (Resend)
+سجلوا في resend.com، وثّقوا الدومين، وحطوا `RESEND_API_KEY` كـ secret و`EMAIL_FROM` = `جرعة <hello@yourdomain.com>` كـ variable، مع `EMAIL_TO` و`SITE_URL`. لو `SMTP_USER` موجود، يستخدم Gmail أولاً.
 
 ## أتمتة كتابة العدد اليومي
 

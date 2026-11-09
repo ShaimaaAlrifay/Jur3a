@@ -1,7 +1,7 @@
 # Emails the latest issue whenever issues.json changes on main.
-# Add these in GitHub → Settings → Secrets and variables → Actions:
-#   secrets:   RESEND_API_KEY
-#   variables: EMAIL_FROM, EMAIL_TO, SITE_URL
+# GitHub → Settings → Secrets and variables → Actions
+# Gmail:  secret SMTP_PASSWORD (Gmail App Password) · variables SMTP_USER, EMAIL_TO, SITE_URL
+# Resend: secret RESEND_API_KEY · variables EMAIL_FROM, EMAIL_TO, SITE_URL
 name: Email new issue
 
 on:
@@ -19,6 +19,8 @@ jobs:
         run: sleep 90
       - name: Send email
         env:
+          SMTP_USER: ${{ vars.SMTP_USER }}
+          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           EMAIL_FROM: ${{ vars.EMAIL_FROM }}
           EMAIL_TO: ${{ vars.EMAIL_TO }}

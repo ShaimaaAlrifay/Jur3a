@@ -1,42 +1,77 @@
 #!/usr/bin/env python3
-"""Send an email about the latest issue of «جرعة» via Resend (https://resend.com).
+"""Email the latest issue of «جرعة».
 
-Env vars:
-  RESEND_API_KEY  your Resend API key
-  EMAIL_FROM      verified sender, e.g. "جرعة <hello@yourdomain.com>"
-  EMAIL_TO        comma-separated recipients
-  SITE_URL        public site URL without trailing slash, e.g. https://jur3a.vercel.app
+Two ways to send (pick one):
+  A) Gmail (from your own address)  -> set SMTP_USER + SMTP_PASSWORD (a Gmail App Password)
+  B) Resend (from your domain)      -> set RESEND_API_KEY + EMAIL_FROM
+
+Always set:
+  EMAIL_TO  comma-separated recipients (sent as BCC, so they don't see each other)
+  SITE_URL  public site URL without trailing slash
 """
-import json, os, sys, urllib.request
+import json, os, smtplib, sys, urllib.request
+from email.message import EmailMessage
+from email.utils import formataddr
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
-def main():
+def build():
     data = json.load(open(os.path.join(ROOT, "issues.json"), encoding="utf-8"))
     i = max(data["issues"], key=lambda x: x["number"])
     site = os.environ["SITE_URL"].rstrip("/")
     link = f"{site}/issues/{i['slug']}.html"
     cover = f"{site}/{i['cover']}" if i.get("cover") else ""
+    img = f'<a href="{link}"><img src="{cover}" alt="" style="width:100%;border-radius:12px;display:block"></a>' if cover else ""
     html = f"""<div dir="rtl" style="font-family:Tahoma,Arial,sans-serif;max-width:600px;margin:auto;color:#111">
-  {f'<a href="{link}"><img src="{cover}" alt="" style="width:100%;border-radius:12px;display:block"></a>' if cover else ''}
+  {img}
   <p style="color:#B3261E;font-weight:bold;margin:18px 0 4px">جرعة #{i['number']} · {i['topic']}</p>
   <h1 style="font-size:24px;margin:0 0 8px">{i['title']}</h1>
   <p style="font-size:16px;line-height:1.8;color:#444">{i['subtitle']}</p>
   <p><a href="{link}" style="display:inline-block;background:#111;color:#fff;padding:10px 18px;border-radius:999px;text-decoration:none">اقرأوا العدد ({i['minutes']} دقائق)</a></p>
-  <p style="font-size:12px;color:#888">جرعة · تُرسل كل صباح الساعة 8 · <a href="{site}/" style="color:#888">كل الأعداد</a></p>
+  <p style="font-size:12px;color:#888">جرعة · كل صباح الساعة 8 · <a href="{site}/" style="color:#888">كل الأعداد</a></p>
 </div>"""
-    body = json.dumps({
-        "from": os.environ["EMAIL_FROM"],
-        "to": [e.strip() for e in os.environ["EMAIL_TO"].split(",") if e.strip()],
-        "subject": f"جرعة #{i['number']}: {i['title']}",
-        "html": html,
-    }).encode()
+    text = f"جرعة #{i['number']}: {i['title']}\n{i['subtitle']}\n{link}"
+    return f"جرعة #{i['number']}: {i['title']}", html, text
+
+
+def recipients():
+    return [e.strip() for e in os.environ["EMAIL_TO"].split(",") if e.strip()]
+
+
+def send_gmail(subject, html, text):
+    user = os.environ["SMTP_USER"]
+    msg = EmailMessage()
+    msg["Subject"] = subject
+    msg["From"] = formataddr(("جرعة", user))
+    msg["To"] = user
+    msg["Bcc"] = ", ".join(recipients())
+    msg.set_content(text)
+    msg.add_alternative(html, subtype="html")
+    with smtplib.SMTP_SSL(os.environ.get("SMTP_HOST", "smtp.gmail.com"), int(os.environ.get("SMTP_PORT", "465"))) as s:
+        s.login(user, os.environ["SMTP_PASSWORD"])
+        s.send_message(msg)
+    print("sent via SMTP to", len(recipients()), "recipient(s)")
+
+
+def send_resend(subject, html, text):
+    body = json.dumps({"from": os.environ["EMAIL_FROM"], "to": [os.environ.get("EMAIL_FROM_ADDR", recipients()[0])],
+                       "bcc": recipients(), "subject": subject, "html": html, "text": text}).encode()
     req = urllib.request.Request("https://api.resend.com/emails", data=body, method="POST", headers={
         "Authorization": f"Bearer {os.environ['RESEND_API_KEY']}", "Content-Type": "application/json"})
     with urllib.request.urlopen(req) as r:
-        print("sent:", r.status, r.read().decode())
+        print("sent via Resend:", r.status)
+
+
+def main():
+    subject, html, text = build()
+    if os.environ.get("SMTP_USER"):
+        send_gmail(subject, html, text)
+    elif os.environ.get("RESEND_API_KEY"):
+        send_resend(subject, html, text)
+    else:
+        sys.exit("Set SMTP_USER/SMTP_PASSWORD (Gmail) or RESEND_API_KEY/EMAIL_FROM.")
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    main()
