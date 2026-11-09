@@ -1,0 +1,26 @@
+# Emails the latest issue whenever issues.json changes on main.
+# Add these in GitHub → Settings → Secrets and variables → Actions:
+#   secrets:   RESEND_API_KEY
+#   variables: EMAIL_FROM, EMAIL_TO, SITE_URL
+name: Email new issue
+
+on:
+  push:
+    branches: [main]
+    paths: [issues.json]
+  workflow_dispatch:
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Wait for the site deploy to finish
+        run: sleep 90
+      - name: Send email
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          EMAIL_FROM: ${{ vars.EMAIL_FROM }}
+          EMAIL_TO: ${{ vars.EMAIL_TO }}
+          SITE_URL: ${{ vars.SITE_URL }}
+        run: python3 scripts/notify.py

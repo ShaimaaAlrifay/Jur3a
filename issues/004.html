@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>جرعة #4: Android 16 صار إلزامي، وFlutter يفصل التصميم</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=block" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body data-base="../" data-issue="4">
+<header class="topbar"><div class="topbar-in">
+  <a class="logo" href="../index.html">جرعة<i>.</i></a>
+  <nav class="nav"><a href="../index.html">كل الأعداد</a></nav>
+</div></header>
+
+<main class="wrap">
+<article class="sheet">
+  <div class="cover photo">
+    <img class="cover-img" src="../assets/covers/apps.jpg" alt="" width="1500" height="1000">
+    <div class="cover-in">
+      <div class="cover-top"><span><b>جرعة</b>العدد 4</span><span>الإثنين 9 نوفمبر 2026</span></div>
+      <p class="keyword" aria-hidden="true">تحديـــث</p>
+      <div class="cover-bot"><span class="chip">تطوير التطبيقات</span><span class="n">#4</span></div>
+    </div>
+  </div>
+  <header class="head">
+    <h1>Android 16 صار إلزامي، وFlutter يفصل التصميم</h1>
+    <p class="sub">مهلة Google Play انتهت، وMaterial وCupertino طلعوا من الـ SDK. قائمة فحص قبل التحديث الجاي.</p>
+    <div class="meta"><span>الإثنين 9 نوفمبر 2026</span><span>6 دقائق قراءة</span></div>
+  </header>
+  <div class="body">
+    <div class="block">
+      <p class="opener">صباح الخير ☕ هذا الشهر فيه موعدين لازم يكونون في تقويم أي أحد يطور تطبيقات جوال: مهلة Google Play خلصت، وFlutter يغير شي أساسي في طريقة بناء الواجهات.</p>
+      <div class="tldr">
+        <strong>الزبدة</strong>
+        <ul class="clean">
+          <li>مهلة استهداف Android 16 (<span class="en">API 36</span>) على Google Play انتهت 1 نوفمبر.</li>
+          <li>Flutter نقل Material وCupertino لحزم مستقلة، والنسخ القديمة داخل الـ SDK بتصير <span class="en">deprecated</span> في إصدار نوفمبر.</li>
+          <li>اليوم: تعديل الكود، وقائمة فحص قبل الرفع.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2 class="band"><span class="band-t">وش صار؟</span><span class="ms" aria-hidden="true">info</span></h2>
+      <p><b>Google Play:</b> من 31 أغسطس 2026 صار لازم أي تطبيق جديد أو تحديث يستهدف <span class="en">API 36</span>، وكانت فيه مهلة إضافية لين 1 نوفمبر. يعني من هالأسبوع، أي تحديث ما يستهدف 36 بيترفض. والتطبيقات الموجودة اللي ما تستهدف على الأقل <span class="en">API 35</span> ما تطلع للمستخدمين الجدد على إصدارات Android الأحدث.</p>
+      <p><b>Flutter:</b> إصدار 3.47 (أغسطس) نقل مكتبات Material وCupertino لحزم مستقلة على pub.dev باسم <code>material_ui</code> و<code>cupertino_ui</code>. والفريق أعلن إن النسخ الأصلية داخل الـ SDK بيصير عليها <span class="en">deprecation</span> رسمي في الإصدار المستقر لنوفمبر، اللي هو 3.50 حسب الجدول.</p>
+      <p><b>ليش هذا أمر جيد؟</b> تحديثات التصميم ما عادت مربوطة بتحديث Flutter كامل. تقدرون ترقون الواجهة بدون ما تلمسون الـ SDK، والعكس.</p>
+    </div>
+
+    <div class="block">
+      <h2 class="band"><span class="band-t">قبل وبعد</span><span class="ms" aria-hidden="true">compare_arrows</span></h2>
+      <p>في Android (أو مجلد <code>android/</code> في مشروع Flutter أو React Native)، في ملف <code>app/build.gradle.kts</code>:</p>
+<pre>android {
+    compileSdk = 36
+    defaultConfig {
+-       targetSdk = 35
++       targetSdk = 36
+    }
+}</pre>
+      <p>تغيير رقم واحد، لكن معه تغييرات في سلوك النظام لازم تختبرونها. تحت.</p>
+    </div>
+
+    <div class="block">
+      <h2 class="band"><span class="band-t">قائمة الفحص قبل الرفع</span><span class="ms" aria-hidden="true">checklist</span></h2>
+      <ul class="check">
+        <li><span><b>Edge-to-edge:</b> مع استهداف 36 ما عاد فيه خيار للهروب من عرض التطبيق خلف شريط الحالة وشريط التنقل. افحصوا كل شاشة أن المحتوى ما يختفي تحتهم.</span></li>
+        <li><span><b>Predictive back:</b> رجوع الإيماءة التنبؤي صار مفعّل افتراضياً، و<code>onBackPressed</code> ما عاد ينادى أصلاً. انقلوا الكود لـ <code>OnBackPressedCallback</code>، أو أوقفوه مؤقتاً بـ <code>android:enableOnBackInvokedCallback="false"</code> في الـ Manifest.</span></li>
+        <li><span><b>الشاشات الكبيرة:</b> على التابلت والأجهزة القابلة للطي (عرض 600dp وأكثر)، النظام يتجاهل قيود الاتجاه وتغيير الحجم. لو تطبيقكم مقفول على الوضع العمودي، شوفوا شكله بالعرض.</span></li>
+        <li><span><b>المكتبات الأصلية:</b> حدّثوا أي <span class="en">SDK</span> خارجي (دفع، تحليلات، إعلانات) لنسخة تدعم 36.</span></li>
+        <li><span><b>Flutter:</b> شغلوا <code>flutter analyze</code> بعد الترقية وشوفوا تحذيرات الـ <span class="en">deprecation</span> لـ Material قبل ما تصير أخطاء.</span></li>
+        <li><span><b>اختبار حقيقي:</b> جهاز أو محاكي على Android 16، مع وضع الإيماءات ووضع الأزرار الثلاثة.</span></li>
+      </ul>
+    </div>
+
+    <div class="block">
+      <h2 class="band"><span class="band-t">مكتبة اليوم: <span class="en">Expo UI</span></span><span class="ms" aria-hidden="true">extension</span></h2>
+      <p>مكتبة من Expo (لا زالت <span class="en">beta</span>) تخليكم ترسمون مكونات النظام الأصلية مباشرة من React Native: SwiftUI على iOS، وJetpack Compose على Android. يعني لما Apple أو Google يطلقون شكل جديد للمكونات، يوصلكم بدون ما تنتظرون أحد يعيد كتابته.</p>
+    </div>
+
+    <div class="block">
+      <h2 class="band"><span class="band-t">خطأ شائع</span><span class="ms" aria-hidden="true">error</span></h2>
+      <div class="mf">
+        <div class="myth"><small>الاعتقاد</small><b>«غيرت targetSdk والتطبيق شغال عندي، خلاص.»</b></div>
+        <div class="fact"><small>الواقع</small>تغييرات السلوك تظهر غالباً على أجهزة وإعدادات ما جربتوها: إيماءات، أحجام شاشات، لغات RTL. اختبروا العربي بالذات، لأن الـ <span class="en">insets</span> تنعكس.</div>
+      </div>
+    </div>
+
+    <div class="block sources">
+      <h2 class="band"><span class="band-t">المصادر</span><span class="ms" aria-hidden="true">link</span></h2>
+      <ol>
+        <li><a href="https://ecorpit.com/hybrid-app-development-company/">2026 platform deadlines for Flutter, React Native and Capacitor</a></li>
+        <li><a href="https://www.appsonair.com/blogs/mobile-wrapped-august-2026">AppsOnAir: Mobile Wrapped, August 2026</a></li>
+        <li><a href="https://tech-insider.org/react-native-vs-flutter-2026/">Tech Insider: Flutter release schedule (3.50 in November)</a></li>
+        <li><a href="https://developer.android.com/about/versions/16/behavior-changes-16">Android Developers: Behavior changes for apps targeting Android 16</a></li>
+        <li><a href="https://cheesecakelabs.com/blog/?p=13707">Cheesecake Labs: State of Mobile 2026 (Expo UI)</a></li>
+      </ol>
+    </div>
+    <hr class="rule">
+
+    <div class="block">
+      <div class="tags"><span>تطوير التطبيقات</span><span>Android</span><span>Flutter</span><span>React Native</span></div>
+      <p class="signoff">نشوفكم بكرة الساعة 8 مع جرعة جديدة. يومكم سعيد 🤍<br><b>جرعة</b></p>
+    </div>
+  </div>
+</article>
+
+<nav class="pager" id="pager" aria-label="التنقل بين الأعداد"></nav>
+<h2 class="section-title">أعداد سابقة</h2>
+<div class="cards more" id="more"><p class="empty">جاري التحميل…</p></div>
+</main>
+<footer class="foot"><span>جرعة · تُرسل كل صباح</span><a href="../index.html">كل الأعداد</a></footer>
+<script src="../assets/app.js"></script>
+</body>
+</html>

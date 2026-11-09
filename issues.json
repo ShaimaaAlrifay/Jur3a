@@ -1,0 +1,128 @@
+{
+ "issues": [
+  {
+   "number": 1,
+   "slug": "001",
+   "date": "2026-11-09",
+   "topic": "هندسة البرمجيات",
+   "minutes": 7,
+   "title": "من كتابة الكود إلى بناء المصنع",
+   "subtitle": "ليش الكل صار يتكلم عن Software Factories، ووش يعني هذا لشغلك كمهندسين.",
+   "keyword": "مَصنـــع",
+   "cover": "assets/covers/engineering.jpg"
+  },
+  {
+   "number": 2,
+   "slug": "002",
+   "date": "2026-11-09",
+   "topic": "ريادة الأعمال",
+   "minutes": 6,
+   "title": "هل شركتكم حية تلقائياً؟",
+   "subtitle": "سؤال Paul Graham اللي يفرق بين شركة تعيش وشركة تنتظر الجولة الجاية، وصفقة HUMAIN وCNTXT.",
+   "subtitle_html": "سؤال Paul Graham اللي يفرق بين شركة تعيش وشركة تنتظر الجولة الجاية، وصفقة HUMAIN وCNTXT.",
+   "keyword": "حيـــاة",
+   "cover": "assets/covers/startups.jpg"
+  },
+  {
+   "number": 3,
+   "slug": "003",
+   "date": "2026-11-09",
+   "topic": "إدارة المنتجات",
+   "minutes": 6,
+   "title": "وقّفي القفز من الهدف للميزة",
+   "subtitle": "شجرة الفرص والحلول: كيف تربطين كل ميزة بمشكلة حقيقية، مع قالب جاهز.",
+   "subtitle_html": "شجرة الفرص والحلول (<span class=\"en\">Opportunity Solution Tree</span>): كيف تربطين كل ميزة بمشكلة حقيقية، مع قالب جاهز.",
+   "keyword": "شَجـــرة",
+   "cover": "assets/covers/product.jpg"
+  },
+  {
+   "number": 4,
+   "slug": "004",
+   "date": "2026-11-09",
+   "topic": "تطوير التطبيقات",
+   "minutes": 6,
+   "title": "Android 16 صار إلزامي، وFlutter يفصل التصميم",
+   "subtitle": "مهلة Google Play انتهت، وMaterial وCupertino طلعوا من الـ SDK. قائمة فحص قبل التحديث الجاي.",
+   "keyword": "تحديـــث",
+   "cover": "assets/covers/apps.jpg"
+  },
+  {
+   "number": 5,
+   "slug": "005",
+   "date": "2026-11-09",
+   "topic": "الصحة البدنية",
+   "minutes": 6,
+   "title": "ساعتين حديد بالأسبوع تكفي",
+   "subtitle": "دراسة تابعت 147 ألف شخص 30 سنة لقت النقطة المثالية لتمارين المقاومة. وهذي خطتكم.",
+   "keyword": "قـــوّة",
+   "cover": "assets/covers/fitness.jpg"
+  },
+  {
+   "number": 6,
+   "slug": "006",
+   "date": "2026-11-09",
+   "topic": "الصحة النفسية",
+   "minutes": 5,
+   "title": "حطوا للقلق موعد",
+   "subtitle": "تقنية تأجيل القلق: ليش تشتغل، وكيف تطبقونها اليوم، ووش يقول البحث عنها.",
+   "keyword": "مَوعـــد",
+   "cover": "assets/covers/mental.jpg"
+  },
+  {
+   "number": 7,
+   "slug": "007",
+   "date": "2026-11-09",
+   "topic": "سوفت سكلز",
+   "minutes": 5,
+   "title": "فيدباك ما يجرح وما يضيع",
+   "subtitle": "نموذج SBI: الموقف، والسلوك، والأثر. مع جمل جاهزة وموقف من الشغل.",
+   "subtitle_html": "نموذج <span class=\"en\">SBI</span>: الموقف، والسلوك، والأثر. مع جمل جاهزة وموقف من الشغل.",
+   "keyword": "أثـــر",
+   "cover": "assets/covers/soft-skills.jpg"
+  },
+  {
+   "number": 8,
+   "slug": "008",
+   "date": "2026-11-09",
+   "topic": "التسويق",
+   "minutes": 6,
+   "title": "لما ماتت البومة وعاش البراند",
+   "subtitle": "حملة Dead Duo تحت المجهر، وكيف تجهزين للجمعة البيضاء في عصر محركات الإجابة.",
+   "keyword": "ضَجّـــة",
+   "cover": "assets/covers/marketing.jpg"
+  },
+  {
+   "number": 9,
+   "slug": "009",
+   "date": "2026-11-09",
+   "topic": "خلاصة التقنية",
+   "minutes": 5,
+   "title": "أسبوع زر الإيقاف",
+   "subtitle": "عدد خاص: أهم أخبار التقنية في أسبوع، من أمن الـ agents لاستحواذات Git لـ Python بدون JIT.",
+   "keyword": "إيقـــاف",
+   "cover": "assets/covers/digest.jpg"
+  },
+  {
+   "number": 10,
+   "slug": "010",
+   "date": "2026-11-09",
+   "topic": "قصص وأدب عربي",
+   "minutes": 6,
+   "keyword": "شَبَكـــة",
+   "title": "الحمامة المطوّقة والشبكة",
+   "subtitle": "حكاية من كليلة ودمنة عمرها أكثر من 1200 سنة، وفيها درس في القيادة والعمل الجماعي يصلح لاجتماع بكرة.",
+   "cover": "assets/covers/literature.jpg"
+  },
+  {
+   "number": 11,
+   "slug": "011",
+   "date": "2026-11-09",
+   "topic": "تراث سعودي",
+   "minutes": 5,
+   "keyword": "عَرضـــة",
+   "title": "العرضة: لما يصير الشعر خطوة",
+   "subtitle": "كيف صارت العرضة النجدية أول عنصر سعودي منفرد في قائمة اليونسكو للتراث غير المادي، ووش معنى اسمها.",
+   "cover": "assets/covers/heritage.jpg"
+  }
+ ]
+}

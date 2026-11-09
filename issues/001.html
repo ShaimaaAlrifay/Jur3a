@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>جرعة #1: من كتابة الكود إلى بناء المصنع</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=block" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body data-base="../" data-issue="1">
+<header class="topbar"><div class="topbar-in">
+  <a class="logo" href="../index.html">جرعة<i>.</i></a>
+  <nav class="nav"><a href="../index.html">كل الأعداد</a></nav>
+</div></header>
+
+<main class="wrap">
+<article class="sheet">
+  <div class="cover photo">
+    <img class="cover-img" src="../assets/covers/engineering.jpg" alt="" width="1500" height="1000">
+    <div class="cover-in">
+      <div class="cover-top"><span><b>جرعة</b>العدد 1</span><span>الإثنين 9 نوفمبر 2026</span></div>
+      <p class="keyword" aria-hidden="true">مَصنـــع</p>
+      <div class="cover-bot"><span class="chip">هندسة البرمجيات</span><span class="n">#1</span></div>
+    </div>
+  </div>
+  <header class="head">
+    <h1>من كتابة الكود إلى بناء المصنع</h1>
+    <p class="sub">ليش الكل صار يتكلم عن Software Factories، ووش يعني هذا لشغلك كمهندسين.</p>
+    <div class="meta"><span>الإثنين 9 نوفمبر 2026</span><span>7 دقائق قراءة</span></div>
+  </header>
+  <div class="body">
+    <div class="block">
+      <p class="opener">صباح الخير ☕ الأسبوع اللي راح كان غريب شوي على عالم البرمجة. ثلاث شركات كبيرة، كل وحدة من جهة، قالت نفس الشي تقريباً: الشغل ما عاد إنكم تكتبون الكود، الشغل إنكم تبنون النظام اللي يكتبه.</p>
+      <div class="tldr">
+        <strong>الزبدة</strong>
+        <ul class="clean">
+          <li>الصناعة تنتقل من «مطور معه مساعد» إلى «فريق يدير مصنع <span class="en">agents</span>».</li>
+          <li>المهارة الجديدة: تصميم الـ <span class="en">loop</span> والـ <span class="en">harness</span>، مو كتابة السطور.</li>
+          <li>اليوم: ملف واحد يجهّز مشروعكم لأي <span class="en">agent</span>، وأداة تحمي مفاتيحكم السرية.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2 class="band"><span class="band-t">الحكاية</span><span class="ms" aria-hidden="true">auto_stories</span></h2>
+      <p><b>الإشارة الأولى:</b> ميتا استحوذت على <span class="en">Conductor</span>، أداة تخلي المطور يشغّل عدة <span class="en">coding agents</span> بالتوازي في مساحات عمل منفصلة. واحد على الواجهة، وواحد على الـ <span class="en">API</span>، وواحد يكتب الاختبارات، وواحد يكتب التوثيق.</p>
+      <p><b>الإشارة الثانية:</b> GitHub نشرت تفاصيل بنية تخزين Git الجديدة عندها. في اختباراتها الداخلية تحمّلت 5000 <span class="en">agent</span> على مستودع واحد في نفس اللحظة، و7200 <span class="en">push</span> في الثانية. Git انبنى على افتراض إن البشر هم اللي يسوون الـ <span class="en">commits</span>، والافتراض هذا ما عاد صحيح.</p>
+      <p><b>الإشارة الثالثة:</b> تقرير Thoughtworks لاتجاهات نوفمبر حط سؤال واحد في المركز: كيف تنقل الـ <span class="en">agents</span> من تجربة مطور واحد إلى شغل منظم عبر عشرات الفرق؟</p>
+
+      <h3>الإطار اللي يرتب الفكرة</h3>
+      <p>Addy Osmani من Google يقسّم الموضوع لثلاث طبقات، كل وحدة تحتوي اللي قبلها:</p>
+      <div class="stack">
+        <div class="ring"><span class="k">Loop</span><div>الوحدة الأساسية: <span class="en">agent</span> ياخذ مهمة، ينفذها، يتحقق من النتيجة، ويعيد لين تنجح.<small>مثال: «أصلح هذا الاختبار الفاشل» مع أمر يتأكد إن كل الاختبارات صارت خضراء.</small></div></div>
+        <div class="ring"><span class="k">Harness</span><div>البيئة المحيطة بالـ <span class="en">loop</span>: السياق، والوصول للنموذج، والتقييم، والـ <span class="en">sandbox</span>، والهوية والصلاحيات، وضبط التكلفة، والمراقبة.<small>هذا اللي يفرق بين <span class="en">agent</span> للتجربة وواحد تقدرون تثقون فيه.</small></div></div>
+        <div class="ring"><span class="k">Factory</span><div>مجموعة <span class="en">loops</span> مرتبة مثل هيكل تنظيمي: من تحديد وش نبني، للتنفيذ، للتحقق، للنشر، وإشارات الإنتاج ترجع كمهام جديدة.<small>Zach Lloyd مؤسس Warp يقولها مباشرة: هندسة البرمجيات بتصير هندسة مصانع.</small></div></div>
+      </div>
+
+      <h3>وش يتغير فعلياً في شغلكم؟</h3>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>قبل</th><th>بعد</th></tr></thead>
+          <tbody>
+            <tr><td>تكتبون الكود</td><td>تصممون النظام اللي يكتبه</td></tr>
+            <tr><td>تختبرون هذا الـ implementation</td><td>تتحققون إن أي كود يطلع من العملية صحيح</td></tr>
+            <tr><td>تقيسون بعدد الـ tokens أو السطور</td><td>تقيسون التكلفة لكل مهمة مكتملة</td></tr>
+            <tr><td>عنق الزجاجة: كتابة الكود</td><td>عنق الزجاجة: المراجعة، والسياق، ووضوح المواصفات</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>الرأي المعاكس</h3>
+      <p>مو الكل مقتنع. Kent C. Dodds رد على مذكرة Warp وقال إن رؤية «المصنع» صحيحة في جزء منها، لكنها تنسى سياق المنتج، وإن الشغل في النهاية يرجع للمستخدم. وفي InfoWorld طرح Nick Hodges سؤال أصعب: إذا الـ <span class="en">agents</span> صاروا يسوون المهام الصغيرة اللي كان الجونيور يتعلم منها، من وين بيجينا السينيور مستقبلاً؟</p>
+      <blockquote>الكود صار رخيص. الحكم الهندسي، ووضوح المواصفات، وفهم المستخدم صاروا هم القيمة.</blockquote>
+    </div>
+
+    <div class="block">
+      <h2 class="band"><span class="band-t">طبّقوها اليوم</span><span class="ms" aria-hidden="true">bolt</span></h2>
+      <p>جهزوا مشروع واحد من مشاريعكم عشان أي <span class="en">agent</span> يقدر يشتغل فيه بدون ما يسألكم. الـ <span class="en">agent</span> يحتاج أمر واحد يشغّل المشروع كامل بنفس الطريقة كل مرة.</p>
+      <ol class="clean">
+        <li>أنشئوا ملف <code>AGENTS.md</code> في جذر المستودع.</li>
+        <li>اكتبوا فيه ثلاثة أشياء بس: كيف يشتغل المشروع، وكيف تشتغل الاختبارات، ومتى تعتبر المهمة منتهية.</li>
+        <li>اعطوا أي <span class="en">coding agent</span> مهمة صغيرة، وشوفوا هل خلّصها بدون أسئلة.</li>
+      </ol>
+<pre># AGENTS.md
+## Run
+make dev            # starts API + web + db (docker compose)
+## Verify
+make test &amp;&amp; make lint
+## Definition of done
+- All tests green, no new lint warnings
+- New behavior has a test
+- No secrets in diff</pre>
+    </div>
+
+    <div class="block">
+      <h2 class="band"><span class="band-t">على السريع</span><span class="ms" aria-hidden="true">electric_bolt</span></h2>
+      <div class="bites">
+        <div class="bite"><span class="tag">أمن</span><p><b>5 دقائق بس.</b> رصدت Microsoft مهاجمين يستخدمون أدوات <span class="en">agentic AI</span> للبحث عن مفاتيح سرية مكشوفة في مستودعات GitHub العامة. في حادثة وحدة انتقل الـ <span class="en">agent</span> من اكتشاف المفتاح إلى سحب بيانات من <span class="en">Azure Key Vault</span> في حوالي 5 دقائق. حذف المفتاح من المستودع ما يكفي، لازم تلغونه وتصدرون واحد جديد.</p></div>
+        <div class="bite"><span class="tag">ريادة</span><p><b>أكبر جولة في نوفمبر.</b> منصة fal للبنية التحتية للذكاء الاصطناعي التوليدي جمعت 1.6 مليار دولار (<span class="en">Series E و F</span>) في 3 نوفمبر، يعني تقريباً نصف 3.3 مليار جمعتها شركات الذكاء الاصطناعي في أول أيام الشهر.</p></div>
+        <div class="bite"><span class="tag">Java</span><p><b>بعد سبع جولات تجريبية.</b> ميزة <span class="en">Structured Concurrency</span> (JEP 543) صارت نهائية في JDK 28. المهام المتفرعة تعيش وتنتهي مع المهمة الأم، فتقل التسريبات والأخطاء في الكود المتزامن.</p></div>
+        <div class="bite"><span class="tag">صحة</span><p><b>تمرين على معدة فاضية؟</b> تحليل لـ 28 تجربة على بالغين أصحاء لقى إن التمرين وأنت صايم يرفع السكر والإنسولين بعد التمرين ويقلل الأحماض الدهنية الحرة، مقارنة بالتمرين بعد الأكل.</p></div>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2 class="band"><span class="band-t">رقم اليوم</span><span class="ms" aria-hidden="true">insights</span></h2>
+      <div class="bignum">
+        <span class="n">5000</span>
+        <p><span class="en">agent</span> يشتغلون في نفس اللحظة على مستودع واحد، في اختبار GitHub الداخلي لبنية التخزين الجديدة. GitHub نفسها تنبه إن هذا اختبار داخلي، والمستودعات العادية ما تشوف هالحمل اليوم.</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2 class="band"><span class="band-t">أداة اليوم: <span class="en">Gitleaks</span></span><span class="ms" aria-hidden="true">build</span></h2>
+      <p>أداة مفتوحة المصدر تفحص الكود وتاريخ Git كامل بحثاً عن مفاتيح وكلمات مرور مكشوفة. ركّبوها كـ <span class="en">pre-commit hook</span> عشان توقف أي <span class="en">commit</span> فيه سر قبل ما يطلع. ومع خبر Microsoft فوق، صارت ضرورية.</p>
+<pre>brew install gitleaks
+gitleaks git -v                     # scan full history
+gitleaks git --pre-commit --staged  # before each commit</pre>
+      <p><a href="https://github.com/gitleaks/gitleaks">github.com/gitleaks/gitleaks</a></p>
+    </div>
+
+    <div class="block">
+      <h2 class="band"><span class="band-t">سؤال اليوم</span><span class="ms" aria-hidden="true">help</span></h2>
+      <p class="question">لو 80٪ من الكود اللي تكتبونه السنة الجاية كتبه <span class="en">agent</span>، وش هي الـ 20٪ اللي تخليكم لا غنى عنكم؟ وهل تستثمرون فيها اليوم؟</p>
+    </div>
+
+    <div class="block sources">
+      <h2 class="band"><span class="band-t">المصادر</span><span class="ms" aria-hidden="true">link</span></h2>
+      <ol>
+        <li><a href="https://techcrunch.com/2026/11/04/meta-acquires-ai-coding-startup-conductor/">TechCrunch: Meta acquires AI coding startup Conductor</a></li>
+        <li><a href="https://github.blog/engineering/architecture-optimization/inside-githubs-new-git-storage-architecture/">GitHub: Inside GitHub's new Git storage architecture</a></li>
+        <li><a href="https://www.thoughtworks.com/insights/blog/technology-strategy/macro-trends-tech-industry-november-2026">Thoughtworks: Macro trends, November 2026</a></li>
+        <li><a href="https://www.oreilly.com/radar/?p=19568">O'Reilly Radar: The software factory line</a></li>
+        <li><a href="https://latent.space/p/software-factories/">Latent Space: Zach Lloyd on software factories</a></li>
+        <li><a href="https://kentcdodds.com/calls/01/08/what-the-devil-is-a-factory-engineer">Kent C. Dodds: What the devil is a factory engineer?</a></li>
+        <li><a href="https://www.infoworld.com/software-development/">InfoWorld: How will we make senior developers?</a></li>
+        <li><a href="https://www.microsoft.com/en-us/security/blog/2026/11/05/threat-actors-use-agentic-ai-tooling-to-find-and-abuse-exposed-secrets/">Microsoft Security: Agentic AI used to abuse exposed secrets</a></li>
+        <li><a href="https://aifunding.me/newsletters/november-2026">November 2026 AI Funding Roundup</a></li>
+        <li><a href="https://blog.jetbrains.com/idea/2026/11/java-annotated-monthly-november-2026/">JetBrains: Java Annotated Monthly, November 2026</a></li>
+        <li><a href="https://inshorts.com/en/amp_news/new-study-shows-fasted-exercise-changes-glucose-and-insulin-1755179778044">Clinical Nutrition ESPEN: fasted vs fed exercise</a></li>
+      </ol>
+    </div>
+    <hr class="rule">
+
+    <div class="block">
+      <div class="tags"><span>هندسة البرمجيات</span><span>AI Agents</span><span>DevOps</span><span>أمن</span></div>
+      <p class="signoff">نشوفكم بكرة الساعة 8 مع جرعة جديدة. يومكم سعيد 🤍<br><b>جرعة</b></p>
+    </div>
+  </div>
+</article>
+
+<nav class="pager" id="pager" aria-label="التنقل بين الأعداد"></nav>
+<h2 class="section-title">أعداد سابقة</h2>
+<div class="cards more" id="more"><p class="empty">جاري التحميل…</p></div>
+</main>
+<footer class="foot"><span>جرعة · تُرسل كل صباح</span><a href="../index.html">كل الأعداد</a></footer>
+<script src="../assets/app.js"></script>
+</body>
+</html>
