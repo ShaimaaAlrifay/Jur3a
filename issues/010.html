@@ -128,23 +128,28 @@
 </article>
 <section class="join" id="subscribe" hidden>
   <div class="join-in">
-    <p class="join-kicker">اشتركوا في جرعة</p>
-    <h2 class="join-title">جرعتكم كل صباح، الساعة 8:00</h2>
-    <p class="join-sub">فكرة وحدة مركّزة، وخطوة تطبقونها نفس اليوم. مجاناً، وبدون إعلانات.</p>
+    <p class="join-kicker"><span class="dot" aria-hidden="true"></span>نشرة جرعة اليومية</p>
+    <h2 class="join-title">فكرة وحدة كل صباح،<br>توصلكم <em>مع قهوتكم</em></h2>
+    <p class="join-sub">كل يوم الساعة 8 يوصلكم عدد مركّز في التقنية، أو الريادة، أو الصحة، أو الأدب والتراث، وخطوة تطبقونها نفس اليوم.</p>
     <form class="join-form" method="post" target="_blank" data-form="subscribe">
       <label class="sr" for="sub-email">إيميلكم</label>
-      <input id="sub-email" type="email" name="email" required placeholder="name@example.com" dir="ltr" autocomplete="email">
-      <button type="submit">اشتركوا</button>
+      <div class="join-field">
+        <input id="sub-email" type="email" name="email" required placeholder="name@example.com" dir="ltr" autocomplete="email">
+        <button type="submit"><span>اشتركوا</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17 17L7 7M7 7v9M7 7h9"/></svg></button>
+      </div>
       <input type="hidden" name="embed" value="1">
+      <ul class="join-perks" aria-label="مميزات">
+        <li>مجاناً</li><li>بدون إعلانات</li><li>تلغون الاشتراك بضغطة</li>
+      </ul>
       <details class="join-topics">
-        <summary>وش المواضيع اللي تهمكم أكثر؟ (اختياري)</summary>
+        <summary>اختاروا المواضيع اللي تهمكم أكثر (اختياري)</summary>
         <div class="chips">
-          <label><input type="checkbox" name="metadata__interests" value="tech"> تقنية وبرمجة</label>
-          <label><input type="checkbox" name="metadata__interests" value="business"> ريادة ومنتجات</label>
-          <label><input type="checkbox" name="metadata__interests" value="marketing"> تسويق</label>
-          <label><input type="checkbox" name="metadata__interests" value="health"> صحة بدنية ونفسية</label>
-          <label><input type="checkbox" name="metadata__interests" value="skills"> مهارات</label>
-          <label><input type="checkbox" name="metadata__interests" value="culture"> أدب وتراث</label>
+          <label><input type="checkbox" name="metadata__interests" value="tech"><span>تقنية وبرمجة</span></label>
+          <label><input type="checkbox" name="metadata__interests" value="business"><span>ريادة ومنتجات</span></label>
+          <label><input type="checkbox" name="metadata__interests" value="marketing"><span>تسويق</span></label>
+          <label><input type="checkbox" name="metadata__interests" value="health"><span>صحة بدنية ونفسية</span></label>
+          <label><input type="checkbox" name="metadata__interests" value="skills"><span>مهارات</span></label>
+          <label><input type="checkbox" name="metadata__interests" value="culture"><span>أدب وتراث</span></label>
         </div>
       </details>
     </form>

@@ -415,6 +415,132 @@
     return res;
   }
 
+  /* ── "letter" style: a paper card over the issue's photo, with a wax seal ── */
+  function paperTexture(ctx, x, y, w, h, r) {
+    ctx.save();
+    roundRect(ctx, x, y, w, h, r); ctx.clip();
+    var g = ctx.createLinearGradient(x, y, x + w, y + h);
+    g.addColorStop(0, '#FBF8F1'); g.addColorStop(1, '#F1EBDD');
+    ctx.fillStyle = g; ctx.fillRect(x, y, w, h);
+    // fibres / grain (seeded so the preview doesn't flicker)
+    var seed = 7; function rnd() { seed = (seed * 16807) % 2147483647; return seed / 2147483647; }
+    for (var i = 0; i < w * h / 90; i++) {
+      var a = rnd() * 0.05;
+      ctx.fillStyle = rnd() > .5 ? 'rgba(120,96,60,' + a + ')' : 'rgba(255,255,255,' + a * 1.4 + ')';
+      ctx.fillRect(x + rnd() * w, y + rnd() * h, 1 + rnd() * 2, 1);
+    }
+    var v = ctx.createRadialGradient(x + w / 2, y + h / 2, Math.min(w, h) * .35, x + w / 2, y + h / 2, Math.max(w, h) * .75);
+    v.addColorStop(0, 'rgba(120,96,60,0)'); v.addColorStop(1, 'rgba(120,96,60,.10)');
+    ctx.fillStyle = v; ctx.fillRect(x, y, w, h);
+    ctx.restore();
+  }
+  function roundRect(ctx, x, y, w, h, r) {
+    ctx.beginPath(); ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r);
+    ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath();
+  }
+  function waxSeal(ctx, cx, cy, R) {
+    ctx.save();
+    // irregular melted edge
+    ctx.beginPath();
+    var n = 26, seed = 3; function rnd() { seed = (seed * 16807) % 2147483647; return seed / 2147483647; }
+    for (var i = 0; i <= n; i++) {
+      var ang = i / n * Math.PI * 2, rr = R * (1 + (rnd() - .5) * .14);
+      var px = cx + Math.cos(ang) * rr, py = cy + Math.sin(ang) * rr;
+      i ? ctx.lineTo(px, py) : ctx.moveTo(px, py);
+    }
+    ctx.closePath();
+    ctx.shadowColor = 'rgba(60,10,5,.45)'; ctx.shadowBlur = 18; ctx.shadowOffsetY = 6;
+    var g = ctx.createRadialGradient(cx - R * .35, cy - R * .4, R * .1, cx, cy, R * 1.1);
+    g.addColorStop(0, '#F08A79'); g.addColorStop(.45, '#E5604F'); g.addColorStop(1, '#A8382B');
+    ctx.fillStyle = g; ctx.fill();
+    ctx.shadowColor = 'transparent';
+    // pressed inner ring
+    ctx.lineWidth = R * .07; ctx.strokeStyle = 'rgba(120,30,20,.35)';
+    ctx.beginPath(); ctx.arc(cx, cy, R * .7, 0, Math.PI * 2); ctx.stroke();
+    ctx.lineWidth = R * .03; ctx.strokeStyle = 'rgba(255,200,190,.35)';
+    ctx.beginPath(); ctx.arc(cx - 1, cy - 1.5, R * .74, Math.PI * .9, Math.PI * 1.6); ctx.stroke();
+    // embossed letter
+    ctx.font = '700 ' + Math.round(R * 1.05) + 'px "Amiri",serif'; ctx.textAlign = 'center'; ctx.direction = 'rtl';
+    ctx.fillStyle = 'rgba(255,215,205,.55)'; ctx.fillText('ج', cx - 1.5, cy + R * .2 - 2);
+    ctx.fillStyle = 'rgba(110,25,15,.55)'; ctx.fillText('ج', cx + 1.5, cy + R * .2 + 2);
+    ctx.fillStyle = '#D9533F'; ctx.fillText('ج', cx, cy + R * .2);
+    ctx.restore();
+  }
+  function renderLetter(s, img, fmt) {
+    var F = FORMATS[fmt] || FORMATS.pt, W = F.W, H = F.H, m = meta();
+    var cv = document.createElement('canvas'); cv.width = W; cv.height = H;
+    var ctx = cv.getContext('2d');
+    // background photo, full bleed
+    ctx.fillStyle = '#1a1a1a'; ctx.fillRect(0, 0, W, H);
+    if (img && img.naturalWidth) {
+      var sc = Math.max(W / img.naturalWidth, H / img.naturalHeight), dw = img.naturalWidth * sc, dh = img.naturalHeight * sc;
+      ctx.drawImage(img, (W - dw) / 2, (H - dh) / 2, dw, dh);
+    }
+    var sh = ctx.createLinearGradient(0, 0, 0, H);
+    sh.addColorStop(0, 'rgba(0,0,0,.35)'); sh.addColorStop(.5, 'rgba(0,0,0,.15)'); sh.addColorStop(1, 'rgba(0,0,0,.6)');
+    ctx.fillStyle = sh; ctx.fillRect(0, 0, W, H);
+
+    var edge = fmt === 'st' ? 100 : 64;            // header/footer inset
+    var cardW = fmt === 'ls' ? 920 : Math.min(W - 2 * (fmt === 'sq' ? 110 : 120), 860);
+    var pad = 70, fs = { sq: 40, pt: 44, ls: 40, st: 48 }[fmt] || 44, lh = fs * 1.85;
+    var maxCardH = H - 2 * edge - 150;
+    // text: selection in ink, context muted, lines after the selection fade out
+    var toks = tokens(s, { sq: 12, pt: 22, ls: 16, st: 34 }[fmt] || 20), L;
+    for (;;) { L = domLayout(toks, fs, cardW - 2 * pad); if (L.height + 2 * pad + 200 <= maxCardH || fs <= 30) break; fs -= 2; lh = fs * 1.85; }
+    while (L.height + 2 * pad + 200 > maxCardH && toks.length > 1) { toks.pop(); L = domLayout(toks, fs, cardW - 2 * pad); }
+    var cardH = Math.max(fmt === 'st' ? 900 : 520, L.height + 2 * pad + 200); // 90 header + ~110 for the seal
+    var cx0 = (W - cardW) / 2, cy0 = (H - cardH) / 2 - (fmt === 'st' ? 20 : 10);
+
+    ctx.save(); ctx.shadowColor = 'rgba(0,0,0,.35)'; ctx.shadowBlur = 60; ctx.shadowOffsetY = 24;
+    roundRect(ctx, cx0, cy0, cardW, cardH, 34); ctx.fillStyle = '#F6F1E7'; ctx.fill(); ctx.restore();
+    paperTexture(ctx, cx0, cy0, cardW, cardH, 34);
+
+    // card header
+    var R0 = cx0 + cardW - pad, L0 = cx0 + pad;
+    ctx.direction = 'rtl'; ctx.textAlign = 'right'; ctx.fillStyle = '#2A2622'; ctx.font = '700 38px "Amiri",serif';
+    ctx.fillText('جرعة', R0, cy0 + pad + 14);
+    var lw = ctx.measureText('جرعة').width;
+    ctx.fillStyle = C.accent; ctx.beginPath(); ctx.arc(R0 - lw - 8, cy0 + pad + 10, 4.5, 0, 7); ctx.fill();
+    ctx.fillStyle = '#8C857A'; ctx.font = '400 21px "Readex Pro",sans-serif'; ctx.textAlign = 'left';
+    ctx.fillText(fitText(ctx, (m.topic ? m.topic + '  ·  ' : '') + 'العدد ' + m.num, ctx.font, cardW - 2 * pad - lw - 40), L0, cy0 + pad + 10);
+    ctx.fillStyle = 'rgba(120,100,70,.18)'; ctx.fillRect(L0, cy0 + pad + 40, cardW - 2 * pad, 1.5);
+
+    // text
+    var ty = cy0 + pad + 90, lastSelBase = -1;
+    L.spans.forEach(function (sp) { if (sp.s) lastSelBase = Math.max(lastSelBase, sp.base); });
+    L.spans.forEach(function (sp) {
+      var after = !sp.s && sp.base > lastSelBase ? Math.round((sp.base - lastSelBase) / lh) : 0;
+      var alpha = after ? Math.max(0.08, 0.5 - after * 0.16) : 1;
+      ctx.font = (sp.s ? '700 ' : '400 ') + fs + 'px "Noto Naskh Arabic","Readex Pro",serif';
+      ctx.fillStyle = sp.s ? '#1E1B18' : 'rgba(110,102,92,' + (after ? alpha : .62) + ')';
+      if (sp.ltr) { ctx.direction = 'ltr'; ctx.textAlign = 'left'; ctx.fillText(sp.w, L0 + sp.l, ty + sp.base, sp.r - sp.l + 2); }
+      else { ctx.direction = 'rtl'; ctx.textAlign = 'right'; ctx.fillText(sp.w, L0 + sp.r, ty + sp.base, sp.r - sp.l + 2); }
+    });
+    // colored underline under the selection, like ink
+    L.lines.forEach(function (line) {
+      var sel = line.filter(function (x) { return x.s; }); if (!sel.length) return;
+      var l = Math.min.apply(null, sel.map(function (x) { return x.l; })), r = Math.max.apply(null, sel.map(function (x) { return x.r; }));
+      ctx.fillStyle = 'rgba(229,96,79,.55)'; ctx.fillRect(L0 + l, ty + sel[0].base + fs * .32, r - l, 2.5);
+    });
+
+    // wax seal, bottom-left corner of the card (RTL mirror of the reference)
+    waxSeal(ctx, cx0 + pad + 34, cy0 + cardH - pad - 8, 52);
+
+    // footer on the photo
+    var fy = H - edge;
+    ctx.shadowColor = 'rgba(0,0,0,.5)'; ctx.shadowBlur = 12;
+    ctx.direction = 'rtl'; ctx.textAlign = 'right'; ctx.fillStyle = C.cream; ctx.font = '600 26px "Readex Pro",sans-serif';
+    ctx.fillText(fitText(ctx, m.title, ctx.font, W - 2 * 90 - 280), W - 90, fy);
+    ctx.direction = 'ltr'; ctx.textAlign = 'left'; ctx.fillStyle = 'rgba(244,241,234,.85)'; ctx.font = '400 22px "Readex Pro",sans-serif';
+    ctx.fillText(m.host, 90, fy);
+    if (fmt === 'st' || fmt === 'pt') {
+      ctx.direction = 'rtl'; ctx.textAlign = 'right'; ctx.fillStyle = C.cream; ctx.font = '700 44px "Amiri",serif';
+      ctx.fillText(m.keyword.replace(/ـ+/g, 'ـ'), W - 90, edge + 40);
+    }
+    ctx.shadowColor = 'transparent'; ctx.shadowBlur = 0;
+    return cv;
+  }
+
   function render(s, img, fmt) {
     var F = FORMATS[fmt] || FORMATS.pt, W = F.W, H = F.H, m = meta();
     var cv = document.createElement('canvas'); cv.width = W; cv.height = H;
@@ -565,11 +691,11 @@
   // test hooks
   window.jur3aShare = {
     read: readSelection, url: fragmentUrl, tokens: tokens, formats: FORMATS,
-    render: function (text, fmt) {
+    render: function (text, fmt, style) {
       var block = body;
       [].some.call(body.querySelectorAll(BLOCKS), function (b) { if (clean(textOf(b)).indexOf(clean(text)) >= 0) { block = b; return true; } });
       var full = clean(textOf(block)), st = full.indexOf(clean(text));
-      return assets().then(function (img) { return render({ text: clean(text), full: st >= 0 ? full : clean(text), start: Math.max(0, st) }, img, fmt); });
+      return assets().then(function (img) { var s = { text: clean(text), full: st >= 0 ? full : clean(text), start: Math.max(0, st) }; return style === 'letter' ? renderLetter(s, img, fmt) : render(s, img, fmt); });
     }
   };
 })();
