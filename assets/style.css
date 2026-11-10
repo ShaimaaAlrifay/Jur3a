@@ -322,3 +322,32 @@ blockquote{margin:0;padding:14px 18px;border-right:3px solid var(--accent);backg
 .band .ms{color:var(--accent)}
 .cover-bot .n{color:#F4F1EA}
 .cover.photo .cover-top b::after{content:".";color:#E5604F}
+
+/* ── subscribe + suggest ───────────────────────── */
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.hp{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);opacity:0;pointer-events:none}
+.join{background:var(--ink);color:var(--paper);border-radius:4px;margin:28px 0;padding:28px 24px;position:relative;overflow:hidden}
+.join::before{content:"";position:absolute;inset:0 0 auto 0;height:4px;background:var(--accent)}
+.join-kicker{font-family:var(--display);font-size:13px;letter-spacing:.02em;color:#E5604F;margin:0 0 6px;font-weight:600}
+.join-title{font-family:var(--display);font-weight:700;font-size:24px;line-height:1.4;margin:0 0 6px}
+.join-title.small{font-size:20px}
+.join-sub{margin:0 0 18px;opacity:.78;font-size:15px}
+.join-form{display:flex;flex-wrap:wrap;gap:8px}
+.join-form input[type=email]{flex:1 1 220px;min-width:0;font:inherit;font-size:15px;padding:12px 14px;border:1px solid transparent;border-radius:3px;background:var(--paper);color:var(--ink);text-align:left}
+.join button,.suggest button{font-family:var(--display);font-weight:600;font-size:15px;padding:12px 22px;border:0;border-radius:3px;background:var(--accent);color:#fff;cursor:pointer}
+.join button:hover,.suggest button:hover{filter:brightness(1.1)}
+.join button:disabled,.suggest button:disabled{opacity:.6;cursor:wait}
+.join-topics{flex-basis:100%;margin-top:6px;font-family:var(--display);font-size:13px}
+.join-topics summary{cursor:pointer;opacity:.8}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.chips label{display:inline-flex;align-items:center;gap:6px;border:1px solid color-mix(in srgb,var(--paper) 30%,transparent);border-radius:99px;padding:5px 12px;cursor:pointer}
+.chips input{accent-color:var(--accent)}
+.join-msg{font-family:var(--display);font-size:14px;margin:12px 0 0;min-height:1em}
+.join-msg.err{color:#ff8a7a}
+.suggest{border:1px solid var(--line);border-top:3px solid var(--accent);background:var(--paper);border-radius:4px;padding:24px;margin:28px 0}
+.suggest-form{display:grid;gap:6px}
+.suggest-form label{font-family:var(--display);font-size:13px;color:var(--muted);margin-top:6px}
+.suggest-form input,.suggest-form textarea{font:inherit;font-size:15px;padding:10px 12px;border:1px solid var(--line);border-radius:3px;background:var(--bg);color:var(--ink);resize:vertical}
+.suggest-form input:focus,.suggest-form textarea:focus,.join-form input:focus{outline:2px solid var(--accent);outline-offset:1px}
+.suggest-form button{justify-self:start;margin-top:10px}
+.suggest .join-msg.ok{color:var(--accent)}

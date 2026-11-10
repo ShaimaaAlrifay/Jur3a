@@ -1,5 +1,6 @@
 # Emails the latest issue whenever issues.json changes on main.
 # GitHub → Settings → Secrets and variables → Actions
+# Buttondown (recommended — subscribers sign up on the site): secret BUTTONDOWN_API_KEY · variable SITE_URL
 # Gmail:  secret SMTP_PASSWORD (Gmail App Password) · variables SMTP_USER, EMAIL_TO, SITE_URL
 # Resend: secret RESEND_API_KEY · variables EMAIL_FROM, EMAIL_TO, SITE_URL
 name: Email new issue
@@ -19,6 +20,7 @@ jobs:
         run: sleep 90
       - name: Send email
         env:
+          BUTTONDOWN_API_KEY: ${{ secrets.BUTTONDOWN_API_KEY }}
           SMTP_USER: ${{ vars.SMTP_USER }}
           SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}

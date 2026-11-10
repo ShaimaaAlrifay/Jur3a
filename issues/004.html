@@ -107,6 +107,46 @@
     </div>
   </div>
 </article>
+<section class="join" id="subscribe" hidden>
+  <div class="join-in">
+    <p class="join-kicker">اشتركوا في جرعة</p>
+    <h2 class="join-title">جرعتكم كل صباح، الساعة 8:00</h2>
+    <p class="join-sub">فكرة وحدة مركّزة، وخطوة تطبقونها نفس اليوم. مجاناً، وبدون إعلانات.</p>
+    <form class="join-form" method="post" target="_blank" data-form="subscribe">
+      <label class="sr" for="sub-email">إيميلكم</label>
+      <input id="sub-email" type="email" name="email" required placeholder="name@example.com" dir="ltr" autocomplete="email">
+      <button type="submit">اشتركوا</button>
+      <input type="hidden" name="embed" value="1">
+      <details class="join-topics">
+        <summary>وش المواضيع اللي تهمكم أكثر؟ (اختياري)</summary>
+        <div class="chips">
+          <label><input type="checkbox" name="metadata__interests" value="tech"> تقنية وبرمجة</label>
+          <label><input type="checkbox" name="metadata__interests" value="business"> ريادة ومنتجات</label>
+          <label><input type="checkbox" name="metadata__interests" value="marketing"> تسويق</label>
+          <label><input type="checkbox" name="metadata__interests" value="health"> صحة بدنية ونفسية</label>
+          <label><input type="checkbox" name="metadata__interests" value="skills"> مهارات</label>
+          <label><input type="checkbox" name="metadata__interests" value="culture"> أدب وتراث</label>
+        </div>
+      </details>
+    </form>
+    <p class="join-msg" role="status" aria-live="polite"></p>
+  </div>
+</section>
+<section class="suggest" id="suggest" hidden>
+  <h2 class="join-title small">اقترحوا علينا موضوع</h2>
+  <p class="join-sub">فيه شي تبون تفهمونه أكثر؟ قولوا لنا، وممكن يكون عدد جاي.</p>
+  <form class="suggest-form" data-form="suggest">
+    <label for="sg-topic">الموضوع</label>
+    <input id="sg-topic" name="topic" required maxlength="120" placeholder="مثلاً: الاستثمار للمبتدئين، أو الكتابة الإبداعية">
+    <label for="sg-why">ليش يهمكم؟ (اختياري)</label>
+    <textarea id="sg-why" name="why" rows="3" maxlength="600"></textarea>
+    <label for="sg-email">إيميلكم إذا تبون نرد عليكم (اختياري)</label>
+    <input id="sg-email" type="email" name="email" dir="ltr" placeholder="name@example.com">
+    <input type="text" name="_honey" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+    <button type="submit">أرسلوا الاقتراح</button>
+  </form>
+  <p class="join-msg" role="status" aria-live="polite"></p>
+</section>
 
 <nav class="pager" id="pager" aria-label="التنقل بين الأعداد"></nav>
 <h2 class="section-title">أعداد سابقة</h2>
@@ -114,5 +154,6 @@
 </main>
 <footer class="foot"><span>جرعة · تُرسل كل صباح</span><a href="../index.html">كل الأعداد</a></footer>
 <script src="../assets/app.js"></script>
+<script src="../assets/forms.js"></script>
 </body>
 </html>

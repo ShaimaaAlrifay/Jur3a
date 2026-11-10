@@ -14,6 +14,8 @@ def ardate(s):
     d = datetime.date.fromisoformat(s)
     return f"{DAYS[d.weekday()]} {ar(d.day)} {MONTHS[d.month-1]} {ar(d.year)}"
 
+FORMS = open(os.path.join(ROOT, "assets", "forms.html"), encoding="utf-8").read()
+
 TPL = """<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -51,13 +53,14 @@ TPL = """<!DOCTYPE html>
 {body}
   </div>
 </article>
-
+{forms}
 <nav class="pager" id="pager" aria-label="التنقل بين الأعداد"></nav>
 <h2 class="section-title">أعداد سابقة</h2>
 <div class="cards more" id="more"><p class="empty">جاري التحميل…</p></div>
 </main>
 <footer class="foot"><span>جرعة · تُرسل كل صباح</span><a href="../index.html">كل الأعداد</a></footer>
 <script src="../assets/app.js"></script>
+<script src="../assets/forms.js"></script>
 </body>
 </html>
 """
@@ -96,7 +99,7 @@ def main():
         body = open(src, encoding="utf-8").read().rstrip()
         html = TPL.format(num=ar(i["number"]), number=i["number"], title=i["title"], topic=i["topic"],
                           subtitle_html=i.get("subtitle_html", i["subtitle"]), date=ardate(i["date"]),
-                          minutes=ar(i["minutes"]), body=transform(body), art=art(i["topic"]), keyword=i.get("keyword", i["topic"]), cover=i["cover"])
+                          minutes=ar(i["minutes"]), body=transform(body), art=art(i["topic"]), keyword=i.get("keyword", i["topic"]), cover=i["cover"], forms=FORMS)
         open(os.path.join(ROOT, "issues", f"{i['slug']}.html"), "w", encoding="utf-8").write(html)
         print("built", i["slug"])
 

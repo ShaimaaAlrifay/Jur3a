@@ -2,6 +2,7 @@
 """Email the latest issue of «جرعة».
 
 Two ways to send (pick one):
+  0) Buttondown (all site subscribers) -> set BUTTONDOWN_API_KEY  [preferred: no manual list]
   A) Gmail (from your own address)  -> set SMTP_USER + SMTP_PASSWORD (a Gmail App Password)
   B) Resend (from your domain)      -> set RESEND_API_KEY + EMAIL_FROM
 
@@ -9,7 +10,7 @@ Always set:
   EMAIL_TO  comma-separated recipients (sent as BCC, so they don't see each other)
   SITE_URL  public site URL without trailing slash
 """
-import json, os, smtplib, sys, urllib.request
+import json, os, smtplib, sys, urllib.request, urllib.error
 from email.message import EmailMessage
 from email.utils import formataddr
 
@@ -63,9 +64,32 @@ def send_resend(subject, html, text):
         print("sent via Resend:", r.status)
 
 
+def send_buttondown(subject, html, text):
+    """Send to every confirmed Buttondown subscriber (they sign up on the site)."""
+    import json
+    payload = json.dumps({"subject": subject, "body": html, "status": "about_to_send"}).encode()
+    def post(confirm):
+        h = {"Authorization": f"Token {os.environ['BUTTONDOWN_API_KEY']}", "Content-Type": "application/json"}
+        if confirm:
+            h["X-Buttondown-Live-Dangerously"] = "true"  # one-time per API key
+        req = urllib.request.Request("https://api.buttondown.com/v1/emails", data=payload, method="POST", headers=h)
+        with urllib.request.urlopen(req) as r:
+            print("sent via Buttondown:", r.status)
+    try:
+        post(False)
+    except urllib.error.HTTPError as e:
+        detail = e.read().decode("utf-8", "replace")
+        if e.code == 400 and "sending_requires_confirmation" in detail:
+            post(True)
+        else:
+            sys.exit(f"Buttondown error {e.code}: {detail}")
+
+
 def main():
     subject, html, text = build()
-    if os.environ.get("SMTP_USER"):
+    if os.environ.get("BUTTONDOWN_API_KEY"):
+        send_buttondown(subject, html, text)
+    elif os.environ.get("SMTP_USER"):
         send_gmail(subject, html, text)
     elif os.environ.get("RESEND_API_KEY"):
         send_resend(subject, html, text)

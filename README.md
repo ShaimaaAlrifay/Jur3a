@@ -73,3 +73,19 @@ python3 -m http.server 8000    # افتحوا http://localhost:8000
 - الخطوط: Amiri Bold (كلمة الغلاف والشعار)، Readex Pro (العناوين والواجهة)، Noto Naskh Arabic (نص المقالات).
 - الأرقام دائماً 0-9، والخطاب بصيغة الجمع.
 # Jur3a
+
+## الاشتراك واقتراح المواضيع
+
+الصفحة الرئيسية وكل عدد فيها صندوق اشتراك وصندوق «اقترحوا علينا موضوع». الإعدادات كلها في `site.json`، وأي قيمة فاضية تخفي صندوقها:
+
+```json
+{ "buttondown_username": "jur3a", "suggest_formsubmit": "الـalias من FormSubmit" }
+```
+
+**الاشتراك (Buttondown):**
+1. سووا حساب مجاني في buttondown.com (مجاني حتى 100 مشترك) وحطوا الـusername في `site.json`.
+2. من Settings → API انسخوا المفتاح، وحطوه في GitHub → Settings → Secrets and variables → Actions كـ secret باسم `BUTTONDOWN_API_KEY`.
+3. خلاص: كل ما ينشر عدد جديد، الـAction يرسله لكل المشتركين عن طريق Buttondown. ما تحتاجون `EMAIL_TO` بعدها (Gmail يبقى احتياطي إذا شلتوا المفتاح).
+4. المواضيع اللي يختارها المشترك تنحفظ في Buttondown كـ metadata باسم `interests`.
+
+**الاقتراحات (FormSubmit):** أول اقتراح يوصلكم إيميل تفعيل من FormSubmit؛ فعّلوه، وخذوا الـalias العشوائي من لوحتهم وحطوه في `suggest_formsubmit` عشان إيميلكم ما يظهر في كود الصفحة.
