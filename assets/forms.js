@@ -23,9 +23,9 @@
         if (picks.length) d.append('metadata__interests', picks.join(','));
         var b = f.querySelector('button'); b.disabled = true;
         fetch(f.action, { method: 'POST', mode: 'no-cors', body: d }).then(function () {
-          f.reset(); done(f, 'تم! راجعوا بريدكم وأكدوا الاشتراك، وأول جرعة توصلكم الساعة 8 الصبح.', true);
+          f.reset(); done(f, 'تم! راجع بريدك وأكّد الاشتراك، وأول جرعة توصلك الساعة 8 الصبح.', true);
         }).catch(function () {
-          done(f, 'صار خطأ في الاتصال، جربوا مرة ثانية.', false);
+          done(f, 'صار خطأ في الاتصال، جرّب مرة ثانية.', false);
         }).then(function () { b.disabled = false; });
       });
     }
