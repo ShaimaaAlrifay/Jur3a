@@ -440,3 +440,8 @@ html.sm-lock{overflow:hidden}
 .pg-gap{color:var(--muted);padding:0 2px}
 @media (max-width:480px){.pg-arrow{padding:0 10px;font-size:13px}.list-pager button{min-width:36px;height:36px}}
 .home-list + .join,.sheet + .join{margin-top:40px}
+/* keep the email pill white when the browser autofills it */
+.join-field input{border-radius:999px;color-scheme:light}
+.join-field input:-webkit-autofill,.join-field input:-webkit-autofill:hover,.join-field input:-webkit-autofill:focus,.join-field input:autofill{-webkit-box-shadow:0 0 0 1000px #FFF inset!important;box-shadow:0 0 0 1000px #FFF inset!important;-webkit-text-fill-color:#111!important;caret-color:#111;background-color:#FFF!important;transition:background-color 99999s ease-out 0s}
+.join-interests{color-scheme:dark}
+.join-interests:-webkit-autofill{-webkit-box-shadow:0 0 0 1000px #1d1513 inset!important;-webkit-text-fill-color:#F4F1EA!important}
