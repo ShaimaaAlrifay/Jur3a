@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+  <title>جرعة</title>
+  <link>https://shaimaaalrifay.github.io/Jur3a/</link>
+  <atom:link href="https://shaimaaalrifay.github.io/Jur3a/feed.xml" rel="self" type="application/rss+xml"/>
+  <description>نشرة يومية تصلكم الساعة 8 الصبح: فكرة وحدة مركّزة تطبقونها نفس اليوم.</description>
+  <language>ar</language>
+  <item>
+    <title>جرعة #12: أسبوع انكسرت فيه خمس طبقات</title>
+    <link>https://shaimaaalrifay.github.io/Jur3a/issues/012.html</link>
+    <guid isPermaLink="true">https://shaimaaalrifay.github.io/Jur3a/issues/012.html</guid>
+    <pubDate>Tue, 10 Nov 2026 05:00:00 +0000</pubDate>
+    <category>هندسة البرمجيات</category>
+    <description>ثغرات أكتوبر ضربت كل طبقات البرمجيات تقريباً في وقت واحد، وهذا الإعداد البسيط يحميكم من أغلب الحزم الخبيثة.</description>
+    <enclosure url="https://shaimaaalrifay.github.io/Jur3a/assets/covers/engineering.jpg" type="image/jpeg" length="0"/>
+  </item>
+  <item>
+    <title>جرعة #11: العرضة: لما يصير الشعر خطوة</title>
+    <link>https://shaimaaalrifay.github.io/Jur3a/issues/011.html</link>
+    <guid isPermaLink="true">https://shaimaaalrifay.github.io/Jur3a/issues/011.html</guid>
+    <pubDate>Mon, 09 Nov 2026 05:00:00 +0000</pubDate>
+    <category>تراث سعودي</category>
+    <description>كيف صارت العرضة النجدية أول عنصر سعودي منفرد في قائمة اليونسكو للتراث غير المادي، ووش معنى اسمها.</description>
+    <enclosure url="https://shaimaaalrifay.github.io/Jur3a/assets/covers/heritage.jpg" type="image/jpeg" length="0"/>
+  </item>
+  <item>
+    <title>جرعة #10: الحمامة المطوّقة والشبكة</title>
+    <link>https://shaimaaalrifay.github.io/Jur3a/issues/010.html</link>
+    <guid isPermaLink="true">https://shaimaaalrifay.github.io/Jur3a/issues/010.html</guid>
+    <pubDate>Mon, 09 Nov 2026 05:00:00 +0000</pubDate>
+    <category>قصص وأدب عربي</category>
+    <description>حكاية من كليلة ودمنة عمرها أكثر من 1200 سنة، وفيها درس في القيادة والعمل الجماعي يصلح لاجتماع بكرة.</description>
+    <enclosure url="https://shaimaaalrifay.github.io/Jur3a/assets/covers/literature.jpg" type="image/jpeg" length="0"/>
+  </item>
+  <item>
+    <title>جرعة #9: أسبوع زر الإيقاف</title>
+    <link>https://shaimaaalrifay.github.io/Jur3a/issues/009.html</link>
+    <guid isPermaLink="true">https://shaimaaalrifay.github.io/Jur3a/issues/009.html</guid>
+    <pubDate>Mon, 09 Nov 2026 05:00:00 +0000</pubDate>
+    <category>خلاصة التقنية</category>
+    <description>عدد خاص: أهم أخبار التقنية في أسبوع، من أمن الـ agents لاستحواذات Git لـ Python بدون JIT.</description>
+    <enclosure url="https://shaimaaalrifay.github.io/Jur3a/assets/covers/digest.jpg" type="image/jpeg" length="0"/>
+  </item>
+  <item>
+    <title>جرعة #8: لما ماتت البومة وعاش البراند</title>
+    <link>https://shaimaaalrifay.github.io/Jur3a/issues/008.html</link>
+    <guid isPermaLink="true">https://shaimaaalrifay.github.io/Jur3a/issues/008.html</guid>
+    <pubDate>Mon, 09 Nov 2026 05:00:00 +0000</pubDate>
+    <category>التسويق</category>
+    <description>حملة Dead Duo تحت المجهر، وكيف تجهزين للجمعة البيضاء في عصر محركات الإجابة.</description>
+    <enclosure url="https://shaimaaalrifay.github.io/Jur3a/assets/covers/marketing.jpg" type="image/jpeg" length="0"/>
+  </item>
+  <item>
+    <title>جرعة #7: فيدباك ما يجرح وما يضيع</title>
+    <link>https://shaimaaalrifay.github.io/Jur3a/issues/007.html</link>
+    <guid isPermaLink="true">https://shaimaaalrifay.github.io/Jur3a/issues/007.html</guid>
+    <pubDate>Mon, 09 Nov 2026 05:00:00 +0000</pubDate>
+    <category>سوفت سكلز</category>
+    <description>نموذج SBI: الموقف، والسلوك، والأثر. مع جمل جاهزة وموقف من الشغل.</description>
+    <enclosure url="https://shaimaaalrifay.github.io/Jur3a/assets/covers/soft-skills.jpg" type="image/jpeg" length="0"/>
+  </item>
+  <item>
+    <title>جرعة #6: حطوا للقلق موعد</title>
+    <link>https://shaimaaalrifay.github.io/Jur3a/issues/006.html</link>
+    <guid isPermaLink="true">https://shaimaaalrifay.github.io/Jur3a/issues/006.html</guid>
+    <pubDate>Mon, 09 Nov 2026 05:00:00 +0000</pubDate>
+    <category>الصحة النفسية</category>
+    <description>تقنية تأجيل القلق: ليش تشتغل، وكيف تطبقونها اليوم، ووش يقول البحث عنها.</description>
+    <enclosure url="https://shaimaaalrifay.github.io/Jur3a/assets/covers/mental.jpg" type="image/jpeg" length="0"/>
+  </item>
+  <item>
+    <title>جرعة #5: ساعتين حديد بالأسبوع تكفي</title>
+    <link>https://shaimaaalrifay.github.io/Jur3a/issues/005.html</link>
+    <guid isPermaLink="true">https://shaimaaalrifay.github.io/Jur3a/issues/005.html</guid>
+    <pubDate>Mon, 09 Nov 2026 05:00:00 +0000</pubDate>
+    <category>الصحة البدنية</category>
+    <description>دراسة تابعت 147 ألف شخص 30 سنة لقت النقطة المثالية لتمارين المقاومة. وهذي خطتكم.</description>
+    <enclosure url="https://shaimaaalrifay.github.io/Jur3a/assets/covers/fitness.jpg" type="image/jpeg" length="0"/>
+  </item>
+  <item>
+    <title>جرعة #4: Android 16 صار إلزامي، وFlutter يفصل التصميم</title>
+    <link>https://shaimaaalrifay.github.io/Jur3a/issues/004.html</link>
+    <guid isPermaLink="true">https://shaimaaalrifay.github.io/Jur3a/issues/004.html</guid>
+    <pubDate>Mon, 09 Nov 2026 05:00:00 +0000</pubDate>
+    <category>تطوير التطبيقات</category>
+    <description>مهلة Google Play انتهت، وMaterial وCupertino طلعوا من الـ SDK. قائمة فحص قبل التحديث الجاي.</description>
+    <enclosure url="https://shaimaaalrifay.github.io/Jur3a/assets/covers/apps.jpg" type="image/jpeg" length="0"/>
+  </item>
+  <item>
+    <title>جرعة #3: وقّفي القفز من الهدف للميزة</title>
+    <link>https://shaimaaalrifay.github.io/Jur3a/issues/003.html</link>
+    <guid isPermaLink="true">https://shaimaaalrifay.github.io/Jur3a/issues/003.html</guid>
+    <pubDate>Mon, 09 Nov 2026 05:00:00 +0000</pubDate>
+    <category>إدارة المنتجات</category>
+    <description>شجرة الفرص والحلول: كيف تربطين كل ميزة بمشكلة حقيقية، مع قالب جاهز.</description>
+    <enclosure url="https://shaimaaalrifay.github.io/Jur3a/assets/covers/product.jpg" type="image/jpeg" length="0"/>
+  </item>
+  <item>
+    <title>جرعة #2: هل شركتكم حية تلقائياً؟</title>
+    <link>https://shaimaaalrifay.github.io/Jur3a/issues/002.html</link>
+    <guid isPermaLink="true">https://shaimaaalrifay.github.io/Jur3a/issues/002.html</guid>
+    <pubDate>Mon, 09 Nov 2026 05:00:00 +0000</pubDate>
+    <category>ريادة الأعمال</category>
+    <description>سؤال Paul Graham اللي يفرق بين شركة تعيش وشركة تنتظر الجولة الجاية، وصفقة HUMAIN وCNTXT.</description>
+    <enclosure url="https://shaimaaalrifay.github.io/Jur3a/assets/covers/startups.jpg" type="image/jpeg" length="0"/>
+  </item>
+  <item>
+    <title>جرعة #1: من كتابة الكود إلى بناء المصنع</title>
+    <link>https://shaimaaalrifay.github.io/Jur3a/issues/001.html</link>
+    <guid isPermaLink="true">https://shaimaaalrifay.github.io/Jur3a/issues/001.html</guid>
+    <pubDate>Mon, 09 Nov 2026 05:00:00 +0000</pubDate>
+    <category>هندسة البرمجيات</category>
+    <description>ليش الكل صار يتكلم عن Software Factories، ووش يعني هذا لشغلك كمهندسين.</description>
+    <enclosure url="https://shaimaaalrifay.github.io/Jur3a/assets/covers/engineering.jpg" type="image/jpeg" length="0"/>
+  </item>
+</channel>
+</rss>

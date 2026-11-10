@@ -26,7 +26,7 @@ def build():
     img = f'<a href="{link}"><img src="{cover}" alt="" style="width:100%;border-radius:12px;display:block"></a>' if cover else ""
     html = f"""<div dir="rtl" style="font-family:Tahoma,Arial,sans-serif;max-width:600px;margin:auto;color:#111">
   {img}
-  <p style="color:#B3261E;font-weight:bold;margin:18px 0 4px">جرعة #{i['number']} · {i['topic']}</p>
+  <p style="color:#E5604F;font-weight:bold;margin:18px 0 4px">جرعة #{i['number']} · {i['topic']}</p>
   <h1 style="font-size:24px;margin:0 0 8px">{i['title']}</h1>
   <p style="font-size:16px;line-height:1.8;color:#444">{i['subtitle']}</p>
   <p><a href="{link}" style="display:inline-block;background:#111;color:#fff;padding:10px 18px;border-radius:999px;text-decoration:none">اقرأوا العدد ({i['minutes']} دقائق)</a></p>
@@ -88,8 +88,19 @@ def send_buttondown(subject, html, text):
 def main():
     subject, html, text = build()
     if os.environ.get("BUTTONDOWN_API_KEY"):
-        send_buttondown(subject, html, text)
-    elif os.environ.get("SMTP_USER"):
+        try:
+            send_buttondown(subject, html, text)
+            return
+        except (SystemExit, Exception) as e:
+            print("Buttondown failed:", e)
+            if not os.environ.get("SMTP_USER"):
+                raise
+            # never leave the owner without the issue: fall back to Gmail, then mark the run as failed
+            if not os.environ.get("EMAIL_TO", "").strip():
+                os.environ["EMAIL_TO"] = os.environ["SMTP_USER"]
+            send_gmail(subject, html, text)
+            sys.exit("Buttondown failed; sent via Gmail fallback instead.")
+    if os.environ.get("SMTP_USER"):
         send_gmail(subject, html, text)
     elif os.environ.get("RESEND_API_KEY"):
         send_resend(subject, html, text)

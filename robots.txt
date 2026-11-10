@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://shaimaaalrifay.github.io/Jur3a/sitemap.xml
