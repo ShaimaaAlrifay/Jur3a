@@ -427,3 +427,16 @@ html.sm-lock{overflow:hidden}
 @media (max-width:480px){.sharemodal{align-items:flex-end;padding:0}.sm-box{border-radius:16px 16px 0 0;width:100%;max-height:94dvh}.sm-prev canvas{max-height:50dvh}}
 
 .join-field input:focus,.join-field input:focus-visible{outline:none!important}
+
+/* ── archive pagination ───────────────────── */
+.list-pager{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:22px 0 6px;font-family:var(--display)}
+.list-pager[hidden]{display:none}
+.list-pager button{border:1px solid var(--line);background:var(--paper);color:var(--ink);font:600 14px/1 var(--display);min-width:40px;height:40px;padding:0 12px;border-radius:999px;cursor:pointer;transition:border-color .15s,background .15s}
+.list-pager button:hover:not(:disabled){border-color:var(--ink)}
+.list-pager button:disabled{opacity:.35;cursor:default}
+.list-pager button[aria-current="page"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.list-pager button:focus-visible{outline:2px solid #E5604F;outline-offset:2px}
+.pg-nums{display:flex;align-items:center;gap:6px}
+.pg-gap{color:var(--muted);padding:0 2px}
+@media (max-width:480px){.pg-arrow{padding:0 10px;font-size:13px}.list-pager button{min-width:36px;height:36px}}
+.home-list + .join,.sheet + .join{margin-top:40px}

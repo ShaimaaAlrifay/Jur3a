@@ -24,19 +24,47 @@
       var filters = document.getElementById('filters');
       var topics = [];
       all.forEach(function (i) { if (topics.indexOf(i.topic) < 0) topics.push(i.topic); });
-      var current = 'الكل';
-      function draw() {
-        var shown = all.filter(function (i) { return current === 'الكل' || i.topic === current; });
-        list.innerHTML = shown.length ? shown.map(card).join('') : '<p class="empty">ما فيه أعداد في هذا الموضوع للحين.</p>';
-        var c = document.getElementById('count'); if (c) c.textContent = n(all.length) + ' عدد';
+      var current = 'الكل', page = 1, PER = 10;
+      var pagerEl = document.getElementById('list-pager');
+      function pageButtons(total) {
+        // 1 … 4 5 6 … 12 (compact when there are many pages)
+        var out = [], k;
+        for (k = 1; k <= total; k++) {
+          if (k === 1 || k === total || Math.abs(k - page) <= 1) out.push(k);
+          else if (out[out.length - 1] !== '…') out.push('…');
+        }
+        return out;
       }
+      function draw(scroll) {
+        var shown = all.filter(function (i) { return current === 'الكل' || i.topic === current; });
+        var pages = Math.max(1, Math.ceil(shown.length / PER));
+        if (page > pages) page = pages;
+        var slice = shown.slice((page - 1) * PER, page * PER);
+        list.innerHTML = slice.length ? slice.map(card).join('') : '<p class="empty">ما فيه أعداد في هذا الموضوع للحين.</p>';
+        var c = document.getElementById('count'); if (c) c.textContent = n(all.length) + ' عدد';
+        if (pagerEl) {
+          pagerEl.hidden = pages < 2;
+          pagerEl.innerHTML = pages < 2 ? '' :
+            '<button type="button" class="pg-arrow" data-p="' + (page - 1) + '"' + (page === 1 ? ' disabled' : '') + ' aria-label="الصفحة السابقة">→ السابق</button>' +
+            '<span class="pg-nums">' + pageButtons(pages).map(function (k) {
+              return k === '…' ? '<span class="pg-gap">…</span>' :
+                '<button type="button" data-p="' + k + '"' + (k === page ? ' aria-current="page"' : '') + '>' + n(k) + '</button>';
+            }).join('') + '</span>' +
+            '<button type="button" class="pg-arrow" data-p="' + (page + 1) + '"' + (page === pages ? ' disabled' : '') + ' aria-label="الصفحة التالية">التالي ←</button>';
+        }
+        if (scroll) { var top = (filters || list).getBoundingClientRect().top + window.scrollY - 90; window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' }); }
+      }
+      if (pagerEl) pagerEl.addEventListener('click', function (e) {
+        var b = e.target.closest('button[data-p]'); if (!b || b.disabled) return;
+        page = +b.getAttribute('data-p'); draw(true);
+      });
       if (filters) {
         filters.innerHTML = ['الكل'].concat(topics).map(function (t) {
           return '<button type="button" aria-pressed="' + (t === current) + '">' + esc(t) + '</button>';
         }).join('');
         filters.addEventListener('click', function (e) {
           var b = e.target.closest('button'); if (!b) return;
-          current = b.textContent;
+          current = b.textContent; page = 1;
           [].forEach.call(filters.querySelectorAll('button'), function (x) { x.setAttribute('aria-pressed', String(x === b)); });
           draw();
         });
