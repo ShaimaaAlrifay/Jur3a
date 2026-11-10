@@ -158,74 +158,123 @@
     return lines;
   }
 
-  function render(s) {
-    var W = 1080, H = 1350, P = 96;
+  function loadImg(src) {
+    return new Promise(function (ok) {
+      if (!src) return ok(null);
+      var im = new Image(); im.onload = function () { ok(im); }; im.onerror = function () { ok(null); }; im.src = src;
+    });
+  }
+
+  function pill(ctx, x, y, w, h, stroke, fill) {
+    var r = h / 2;
+    ctx.beginPath();
+    ctx.moveTo(x + r, y); ctx.lineTo(x + w - r, y); ctx.arc(x + w - r, y + r, r, -Math.PI / 2, Math.PI / 2);
+    ctx.lineTo(x + r, y + h); ctx.arc(x + r, y + r, r, Math.PI / 2, Math.PI * 1.5); ctx.closePath();
+    if (fill) { ctx.fillStyle = fill; ctx.fill(); }
+    if (stroke) { ctx.strokeStyle = stroke; ctx.lineWidth = 2; ctx.stroke(); }
+  }
+
+  // Same look as an issue page: the photo cover with its giant keyword, then the quote on paper.
+  function render(s, cover) {
+    var W = 1080, H = 1350, P = 72, CH = 560;
     var cv = document.createElement('canvas'); cv.width = W; cv.height = H;
     var ctx = cv.getContext('2d');
-    ctx.fillStyle = C.paper; ctx.fillRect(0, 0, W, H);
-    ctx.textBaseline = 'alphabetic';
-
+    var CREAM = '#F4F1EA';
     var num = document.body.getAttribute('data-issue') || '';
     var chip = document.querySelector('.cover-bot .chip');
     var topic = chip ? clean(chip.textContent) : '';
+    var kwEl = document.querySelector('.cover .keyword');
+    var keyword = kwEl ? kwEl.textContent.trim() : 'جرعة';
     var h1 = document.querySelector('.head h1');
     var title = h1 ? clean(h1.textContent) : document.title;
 
-    // header: logo (right) · issue + topic (left)
-    ctx.direction = 'rtl'; ctx.textAlign = 'right'; ctx.fillStyle = C.ink;
-    ctx.font = '700 64px "Amiri",serif';
-    ctx.fillText('جرعة', W - P, P + 52);
+    // ── cover ──
+    ctx.fillStyle = '#111'; ctx.fillRect(0, 0, W, CH);
+    if (cover) {
+      var sc = Math.max(W / cover.naturalWidth, CH / cover.naturalHeight);
+      var dw = cover.naturalWidth * sc, dh = cover.naturalHeight * sc;
+      ctx.drawImage(cover, (W - dw) / 2, (CH - dh) / 2, dw, dh);
+    }
+    var g = ctx.createLinearGradient(0, 0, 0, CH);
+    g.addColorStop(0, 'rgba(0,0,0,.6)'); g.addColorStop(.38, 'rgba(0,0,0,.25)'); g.addColorStop(.58, 'rgba(0,0,0,0)'); g.addColorStop(1, 'rgba(0,0,0,.55)');
+    ctx.fillStyle = g; ctx.fillRect(0, 0, W, CH);
+
+    // top row: «جرعة.  العدد 12» ............ topic
+    ctx.direction = 'rtl'; ctx.textAlign = 'right'; ctx.textBaseline = 'alphabetic';
+    ctx.fillStyle = CREAM; ctx.font = '700 46px "Amiri",serif';
+    ctx.fillText('جرعة', W - P, P + 34);
     var lw = ctx.measureText('جرعة').width;
-    ctx.fillStyle = C.accent; ctx.beginPath(); ctx.arc(W - P - lw - 14, P + 46, 7, 0, 7); ctx.fill();
-    ctx.direction = 'rtl'; ctx.textAlign = 'left'; ctx.fillStyle = C.muted;
-    ctx.font = '400 26px "Readex Pro",sans-serif';
-    ctx.fillText((topic ? topic + '  ·  ' : '') + 'العدد ' + num, P, P + 44);
-    ctx.fillStyle = C.accent; ctx.fillRect(P, P + 92, W - 2 * P, 3);
+    ctx.fillStyle = '#E5604F'; ctx.beginPath(); ctx.arc(W - P - lw - 9, P + 30, 5.5, 0, 7); ctx.fill();
+    ctx.fillStyle = 'rgba(244,241,234,.8)'; ctx.font = '400 24px "Readex Pro",sans-serif';
+    ctx.fillText('العدد ' + num, W - P - lw - 34, P + 30);
+    var dEl = document.querySelector('.cover-top span:last-child');
+    ctx.textAlign = 'left';
+    ctx.fillText(dEl ? clean(dEl.textContent) : '', P, P + 30);
+    ctx.fillStyle = 'rgba(244,241,234,.45)'; ctx.fillRect(P, P + 54, W - 2 * P, 1.5);
 
-    // footer: title + url
-    ctx.fillStyle = C.line; ctx.fillRect(P, H - P - 118, W - 2 * P, 1);
-    ctx.direction = 'rtl'; ctx.textAlign = 'right'; ctx.fillStyle = C.ink;
-    var tl = wrapPlain(ctx, title, '600 28px "Readex Pro",sans-serif', W - 2 * P, 2);
-    tl.forEach(function (l, i) { ctx.fillText(l, W - P, H - P - 66 + i * 40 - (tl.length - 1) * 40 + 20); });
-    ctx.direction = 'ltr'; ctx.textAlign = 'left'; ctx.fillStyle = C.muted;
-    ctx.font = '400 22px "Readex Pro",sans-serif';
-    ctx.fillText((location.host + location.pathname).replace(/\/$/, '').replace(/\.html$/, ''), P, H - P + 6);
+    // giant keyword (tatweel included), fitted to the width
+    ctx.textAlign = 'right'; ctx.fillStyle = CREAM;
+    var ks = 196;
+    do { ctx.font = '700 ' + ks + 'px "Amiri",serif'; ks -= 6; } while (ctx.measureText(keyword).width > W - 2 * P && ks > 80);
+    ctx.shadowColor = 'rgba(0,0,0,.35)'; ctx.shadowBlur = 30; ctx.shadowOffsetY = 3;
+    var km = ctx.measureText(keyword), kA = km.actualBoundingBoxAscent || ks * .9, kD = km.actualBoundingBoxDescent || ks * .3;
+    var zoneT = P + 54 + 24, zoneB = CH - P - 22 - 24;
+    if (kA + kD > zoneB - zoneT) { ctx.font = '700 ' + Math.floor(ks * (zoneB - zoneT) / (kA + kD)) + 'px "Amiri",serif'; km = ctx.measureText(keyword); kA = km.actualBoundingBoxAscent; kD = km.actualBoundingBoxDescent; }
+    ctx.fillText(keyword, W - P, zoneT + ((zoneB - zoneT) - (kA + kD)) / 2 + kA);
+    ctx.shadowColor = 'transparent'; ctx.shadowBlur = 0; ctx.shadowOffsetY = 0;
 
-    // quote block: auto-fit
-    var items = runs(tokens(s), ctx);
-    var top = P + 150, bottom = H - P - 160, maxW = W - 2 * P, fs = 58, lh, lines;
-    for (; fs >= 26; fs -= 2) {
-      lh = fs * 1.85;
+    // bottom row: topic chip ........ #12
+    ctx.font = '600 24px "Readex Pro",sans-serif';
+    var cw = ctx.measureText(topic).width + 44;
+    if (topic) {
+      pill(ctx, P, CH - P - 22, cw, 48, 'rgba(244,241,234,.8)', 'rgba(0,0,0,.2)');
+      ctx.fillStyle = CREAM; ctx.textAlign = 'center'; ctx.fillText(topic, P + cw / 2, CH - P + 10);
+    }
+    ctx.direction = 'ltr'; ctx.textAlign = 'right'; ctx.font = '600 44px "Readex Pro",sans-serif'; ctx.fillStyle = CREAM;
+    ctx.fillText('#' + num, W - P, CH - P + 16);
+
+    // ── paper ──
+    ctx.fillStyle = '#FFFFFF'; ctx.fillRect(0, CH, W, H - CH);
+    ctx.fillStyle = C.accent; ctx.fillRect(0, CH, W, 6);
+
+    // red quote mark
+    ctx.direction = 'rtl'; ctx.textAlign = 'right'; ctx.fillStyle = C.accent;
+    ctx.font = '700 150px "Amiri",serif';
+    ctx.fillText('”', W - P + 6, CH + 150);
+
+    // quote text, auto-fit
+    var items = runs(s.text.split(' ').map(function (w) { return { w: w, s: true }; }));
+    var top = CH + 150, bottom = H - 190, maxW = W - 2 * P, fs = 64, lh, lines;
+    for (; fs >= 28; fs -= 2) {
+      lh = fs * 1.75;
       lines = layout(ctx, items, fs, maxW);
       if (lines.length * lh <= bottom - top) break;
     }
-    var y0 = top + ((bottom - top) - lines.length * lh) / 2 + fs * 1.15;
-    lines.forEach(function (line, li) {
-      var y = y0 + li * lh, x = W - P, sp = fs * 0.28;
-      // one highlight per continuous selected span on this line
-      var spanR = null, spanL = null;
-      function flush() {
-        if (spanR === null) return;
-        ctx.fillStyle = C.mark; ctx.fillRect(spanL, y - fs * 1.05, spanR - spanL, fs * 1.5);
-        ctx.fillStyle = C.accent; ctx.fillRect(spanL, y + fs * 0.38, spanR - spanL, 3);
-        spanR = spanL = null;
-      }
+    if (lines.length * lh > bottom - top) { // still too long: cut and add …
+      var max = Math.floor((bottom - top) / lh); lines = lines.slice(0, max);
+      var last = lines[max - 1]; last[last.length - 1] = { w: last[last.length - 1].w + '…', s: true, ltr: false, width: last[last.length - 1].width + fs * .6 };
+    }
+    var y = top + fs * 1.05;
+    lines.forEach(function (line) {
+      var x = W - P, sp = fs * 0.28;
       line.forEach(function (it) {
-        if (it.s) { if (spanR === null) spanR = x + 8; spanL = x - it.width - 8; }
-        else flush();
-        x -= it.width + sp;
-      });
-      flush();
-      x = W - P;
-      line.forEach(function (it) {
-        ctx.font = (it.s ? '700 ' : '400 ') + fs + 'px "Noto Naskh Arabic","Readex Pro",serif';
-        ctx.fillStyle = it.s ? C.ink : C.faded;
-        ctx.direction = it.ltr ? 'ltr' : 'rtl';
-        ctx.textAlign = 'right';
+        ctx.font = '700 ' + fs + 'px "Noto Naskh Arabic","Readex Pro",serif';
+        ctx.fillStyle = C.ink; ctx.direction = it.ltr ? 'ltr' : 'rtl'; ctx.textAlign = 'right';
         ctx.fillText(it.w, x, y);
         x -= it.width + sp;
       });
+      y += lh;
     });
+
+    // footer: band like the section dividers
+    var by = H - P - 64;
+    pill(ctx, P, by, W - 2 * P, 64, '#E4E2DC', '#F3F2EE');
+    ctx.direction = 'rtl'; ctx.textAlign = 'right'; ctx.fillStyle = C.ink;
+    var tl = wrapPlain(ctx, title, '600 25px "Readex Pro",sans-serif', W - 2 * P - 330, 1)[0];
+    ctx.fillText(tl, W - P - 30, by + 41);
+    ctx.direction = 'ltr'; ctx.textAlign = 'left'; ctx.fillStyle = C.accent;
+    ctx.font = '600 21px "Readex Pro",sans-serif';
+    ctx.fillText(location.host.replace(/^www\./, '') || 'jur3a', P + 30, by + 40);
     return cv;
   }
 
@@ -243,8 +292,8 @@
 
   function shareImage(s, btn) {
     btn.disabled = true; status.textContent = 'لحظة…';
-    fontsReady().then(function () {
-      var cv = render(s);
+    Promise.all([fontsReady(), loadImg((document.querySelector('.cover-img') || {}).src)]).then(function (res) {
+      var cv = render(s, res[1]);
       cv.toBlob(function (blob) {
         btn.disabled = false;
         if (!blob) { status.textContent = 'ما زبطت'; return; }
@@ -270,6 +319,6 @@
     var block = body;
     body.querySelectorAll(BLOCKS).forEach(function (b) { if (b.textContent.indexOf(text) >= 0 && block === body) block = b; });
     var full = clean(block.textContent);
-    return fontsReady().then(function () { return render({ text: clean(text), full: full, start: full.indexOf(clean(text)) }); });
+    return Promise.all([fontsReady(), loadImg((document.querySelector('.cover-img') || {}).src)]).then(function (res) { return render({ text: clean(text), full: full, start: full.indexOf(clean(text)) }, res[1]); });
   };
 })();
