@@ -329,10 +329,10 @@ blockquote{margin:0;padding:14px 18px;border-right:3px solid var(--accent);backg
 .join{position:relative;overflow:hidden;margin:32px 0;border-radius:20px;color:#F4F1EA;background:#120b09 url(covers/subscribe.jpg) left 40%/cover no-repeat;box-shadow:0 24px 60px -28px rgba(0,0,0,.55);isolation:isolate}
 .join::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(to left,rgba(10,6,5,.82) 0%,rgba(10,6,5,.62) 40%,rgba(10,6,5,.15) 68%,rgba(10,6,5,0) 85%),linear-gradient(to top,rgba(10,6,5,.45),rgba(10,6,5,0) 45%)}
 .join::after{content:"";position:absolute;inset:0;z-index:-1;border-radius:inherit;box-shadow:inset 0 0 0 1px rgba(244,241,234,.08);pointer-events:none}
-.join-in{position:relative;max-width:min(460px,60%);padding:46px 40px 38px}
+.join-in{position:relative;max-width:min(460px,60%);padding:54px 40px 44px}
 .join-kicker{display:inline-flex;align-items:center;gap:8px;font:600 13px/1 var(--display);color:rgba(244,241,234,.75);margin:0 0 16px;padding:7px 12px;border:1px solid rgba(244,241,234,.22);border-radius:999px;background:rgba(0,0,0,.25);backdrop-filter:blur(4px)}
 .join-kicker .dot{width:7px;height:7px;border-radius:50%;background:#E5604F;box-shadow:0 0 0 4px rgba(229,96,79,.18)}
-.join-title{font-family:var(--display);font-weight:700;font-size:clamp(30px,4.8vw,42px);line-height:1.35;margin:0 0 10px;letter-spacing:-.2px}
+.join-title{font-family:var(--display);font-weight:700;font-size:clamp(30px,4.8vw,42px);line-height:1.35;margin:0 0 24px;letter-spacing:-.2px}
 .join-title em{font-family:var(--logo);font-style:normal;font-weight:700;color:#E5604F;font-size:1.22em;line-height:1.1}
 .join-title.small{font-size:20px;letter-spacing:0}
 .join-sub{margin:0 0 22px;color:rgba(244,241,234,.78);font-size:15.5px;line-height:1.9;max-width:470px}
