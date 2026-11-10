@@ -19,8 +19,9 @@
         var d = new URLSearchParams();
         d.append('email', f.email.value.trim());
         d.append('embed', '1');
-        var picks = [].map.call(f.querySelectorAll('input[name="metadata__interests"]:checked'), function (x) { return x.value; });
-        if (picks.length) d.append('metadata__interests', picks.join(','));
+        var interests = (f.querySelector('.join-interests') || {}).value || '';
+        interests = interests.replace(/\s+/g, ' ').trim().slice(0, 200);
+        if (interests) d.append('metadata__interests', interests);
         var b = f.querySelector('button'); b.disabled = true;
         fetch(f.action, { method: 'POST', mode: 'no-cors', body: d }).then(function () {
           f.reset(); done(f, 'تم! راجع بريدك وأكّد الاشتراك، وأول جرعة توصلك الساعة 8 الصبح.', true);

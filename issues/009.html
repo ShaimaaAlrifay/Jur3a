@@ -132,14 +132,8 @@
       <input type="hidden" name="embed" value="1">
       <details class="join-topics">
         <summary>وش يهمك أكثر؟</summary>
-        <div class="chips">
-          <label><input type="checkbox" name="metadata__interests" value="tech"><span>تقنية وبرمجة</span></label>
-          <label><input type="checkbox" name="metadata__interests" value="business"><span>ريادة ومنتجات</span></label>
-          <label><input type="checkbox" name="metadata__interests" value="marketing"><span>تسويق</span></label>
-          <label><input type="checkbox" name="metadata__interests" value="health"><span>صحة بدنية ونفسية</span></label>
-          <label><input type="checkbox" name="metadata__interests" value="skills"><span>مهارات</span></label>
-          <label><input type="checkbox" name="metadata__interests" value="culture"><span>أدب وتراث</span></label>
-        </div>
+        <label class="sr" for="sub-interests">المواضيع اللي تهمك</label>
+        <input id="sub-interests" class="join-interests" type="text" name="metadata__interests" maxlength="200" placeholder="اكتب المواضيع اللي تهمك، مثلاً: الذكاء الاصطناعي، الاستثمار، الكتابة" autocomplete="off">
       </details>
     </form>
     <p class="join-msg" role="status" aria-live="polite"></p>

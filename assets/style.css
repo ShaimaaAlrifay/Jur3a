@@ -352,6 +352,9 @@ blockquote{margin:0;padding:14px 18px;border-right:3px solid var(--accent);backg
 .join-topics summary::-webkit-details-marker{display:none}
 .join-topics summary::after{content:"+";font-weight:600;color:#E5604F}
 .join-topics[open] summary::after{content:"–"}
+.join-interests{display:block;width:100%;max-width:460px;margin-top:12px;font:400 14.5px var(--display);color:#F4F1EA;background:rgba(0,0,0,.35);border:1px solid rgba(244,241,234,.28);border-radius:14px;padding:12px 16px;outline:none}
+.join-interests::placeholder{color:rgba(244,241,234,.5)}
+.join-interests:focus{border-color:#E5604F;box-shadow:0 0 0 3px rgba(229,96,79,.25)}
 .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
 .chips label{position:relative;cursor:pointer}
 .chips input{position:absolute;opacity:0;width:1px;height:1px}
@@ -422,3 +425,5 @@ html.sm-lock{overflow:hidden}
 .sm-acts button[hidden]{display:none}
 .sm-box .sm-st{margin:0;min-height:1em;font-size:13px;color:var(--accent);text-align:center}
 @media (max-width:480px){.sharemodal{align-items:flex-end;padding:0}.sm-box{border-radius:16px 16px 0 0;width:100%;max-height:94dvh}.sm-prev canvas{max-height:50dvh}}
+
+.join-field input:focus,.join-field input:focus-visible{outline:none!important}
