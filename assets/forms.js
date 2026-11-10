@@ -32,8 +32,8 @@
       });
     }
 
-    if (fs) {
-      var sg = document.getElementById('suggest');
+    var sg = document.getElementById('suggest');
+    if (fs && sg) {
       var g = sg.querySelector('form');
       sg.hidden = false;
       g.addEventListener('submit', function (e) {
