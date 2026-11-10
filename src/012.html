@@ -1,0 +1,100 @@
+    <div class="block">
+      <p class="opener">صباح الخير ☕ تخيلوا أسبوع واحد تنكسر فيه خمس طبقات من البرمجيات اللي تعتمدون عليها: لغة البرمجة، ومكتبة ضغط، وأداة إدارة الكود، وشهادات الأمان، وحزمة تنزلونها كل يوم. هذا اللي صار في أكتوبر، والدرس منه أبسط مما تتوقعون.</p>
+      <div class="tldr">
+        <strong>الزبدة</strong>
+        <ul class="clean">
+          <li>أغلب الثغرات اللي ضربت الفرق الشهر الماضي كانت في كود ما كتبوه أصلاً.</li>
+          <li>المهاجمين بدأوا يتحركون قبل الإعلان الرسمي عن الثغرة، فنافذة التحديث صارت أقصر.</li>
+          <li>اليوم: إعداد من 4 أسطر يأخر تنزيل أي حزمة جديدة 24 ساعة.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2>الحكاية</h2>
+      <p>مدونة Codacy نشرت هالأسبوع جرد لأحداث أكتوبر 2026، والفكرة الأساسية فيه إن الأعطال ما جت من مكان واحد. كل طبقة من طبقات «سلسلة التوريد» البرمجية طاحت تقريباً في نفس الأسبوع، وبعضها ركب فوق بعض:</p>
+      <div class="stack">
+        <div class="ring"><span class="k">Runtime</span><div>ثغرتين في PHP اسمهم <span class="en">PHP2Shell</span> بخطورة 9.2.<small>جامعة Delft رصدت أكثر من 50 ألف محاولة استغلال من أكثر من 600 عنوان IP، وAWS شافت محاولات قبل الإعلان الرسمي بأربعة أيام.</small></div></div>
+        <div class="ring"><span class="k">Library</span><div>ثغرة في مكتبة الضغط <span class="en">Brotli</span> من Google بخطورة 9.2.<small>Imperva أثبتت إنها تسمح بتشغيل كود عن بعد على صورة Node.js رسمية.</small></div></div>
+        <div class="ring"><span class="k">Toolchain</span><div>ثغرتين في GitLab تسمح بتشغيل كود عن بعد.<small>هذي ما تظهر في فحص المكتبات أبداً، لأنها في سيرفر تستضيفونه بأنفسكم وتحتاج تحديث يدوي.</small></div></div>
+        <div class="ring"><span class="k">Trust</span><div>مشكلة في جهة الشهادات <span class="en">eMudhra</span>.<small>انسحبت ثمانية مفاتيح وسيطة خلال يومين، وأثرت على حزم الشهادات اللي تجي مع Go وJava وPerl.</small></div></div>
+        <div class="ring"><span class="k">Supply chain</span><div>نسخة خبيثة من <span class="en">LiteLLM</span> (v1.107.0) على PyPI وDocker.<small>كانت تسرق بيانات الدخول من الأجهزة اللي تنزلها.</small></div></div>
+      </div>
+
+      <h3>ليش يهمكم؟</h3>
+      <p>الكاتب يستشهد بتقرير Verizon لـ 2026 اللي يقول إن ثغرات البرمجيات تجاوزت كلمات المرور المسروقة كطريقة رئيسية لاختراق الأنظمة. يعني السؤال ما عاد «هل بتجينا ثغرة؟»، صار «كم بسرعة نعرف إذا الكود المصاب يوصله تطبيقنا فعلاً؟».</p>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>بدل</th><th>سووا</th></tr></thead>
+          <tbody>
+            <tr><td>SBOM مرة بالسنة للتدقيق</td><td>قائمة حزم محدثة تلقائياً مع كل نسخة</td></tr>
+            <tr><td>فحص أمني قبل الإطلاق بس</td><td>فحص مع كل Pull Request</td></tr>
+            <tr><td>نقرر وقت الأزمة مين يحدّث</td><td>خطة جاهزة: مسؤول، ومهلة، وطريقة رجوع</td></tr>
+            <tr><td>مفاتيح طويلة العمر</td><td>مفاتيح قصيرة العمر وتدويرها بانتظام</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <blockquote>أغلب الخطر في كود ما كتبتوه. فاعرفوا وش عندكم، وكونوا جاهزين قبل لا يجي الإعلان.</blockquote>
+    </div>
+
+    <div class="block">
+      <h2>طبّقوها اليوم</h2>
+      <p>أغلب الحزم الخبيثة تنكشف وتنحذف خلال ساعات من نشرها. فلو أخّرتوا تنزيل أي نسخة جديدة يوم كامل، تفادون معظمها. pnpm 11 يسوي هذا تلقائياً، وإذا كنتم على نسخة أقدم أو تبون تتأكدون، حطوا هذا في <code>pnpm-workspace.yaml</code>:</p>
+<pre># pnpm-workspace.yaml
+minimumReleaseAge: 1440        # 24h before a new version can be installed
+blockExoticSubdeps: true       # no git/tarball sub-dependencies
+strictDepBuilds: true          # unapproved build scripts fail the install
+minimumReleaseAgeExclude:
+  - "my-urgent-security-fix"   # exceptions when you need a patch now</pre>
+      <ol class="clean">
+        <li>تأكدوا إن Node.js عندكم 22 أو أحدث، لأن pnpm 11 يحتاجه.</li>
+        <li>إذا عندكم إعدادات قديمة مثل <code>onlyBuiltDependencies</code>، انقلوها لخيار <code>allowBuilds</code> الجديد.</li>
+        <li>شغّلوا التثبيت وشوفوا أي حزمة صارت ترفض، وقرروا هل تستاهل استثناء.</li>
+      </ol>
+    </div>
+
+    <div class="block">
+      <h2>على السريع</h2>
+      <div class="bites">
+        <div class="bite"><span class="tag">Node.js</span><p><b>نسخة رئيسية وحدة بالسنة.</b> من Node.js 27 في أبريل 2027، المشروع بيطلق نسخة رئيسية وحدة كل سنة، وكلها بتكون LTS، ويختفي نظام الأرقام الفردية والزوجية.</p></div>
+        <div class="bite"><span class="tag">مؤتمر</span><p><b>AI Engineer Code Summit</b> ينطلق اليوم في سان فرانسيسكو لين 12 نوفمبر. من محاوره الرئيسية: محاربة الكود الرديء في «مصانع البرمجيات» اللي تكلمنا عنها في العدد الأول.</p></div>
+        <div class="bite"><span class="tag">أرقام</span><p><b>ثغرة eMudhra في كل مكان.</b> فحوصات Codacy لقتها في 576 مستودع عند 72 منظمة، وفيه 640 تنبيه لسا مفتوح.</p></div>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2>رقم اليوم</h2>
+      <div class="bignum">
+        <span class="n">50,000+</span>
+        <p>محاولة استغلال لثغرة PHP2Shell رصدها مختبر Delft من أكثر من 600 عنوان IP. وبعضها بدأ قبل ما تنعلن الثغرة رسمياً.</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2>أداة اليوم: <span class="en">CycloneDX</span></h2>
+      <p>معيار مفتوح لقائمة مكونات البرمجيات (<span class="en">SBOM</span>)، يعني ملف يقول بالضبط وش المكتبات ونسخها داخل تطبيقكم. لما تنعلن ثغرة جديدة، تبحثون في الملف بدقيقة بدل ما تدورون في الكود يوم كامل. pnpm 11 صار فيه أمر <code>pnpm sbom</code> يطلّعه، وفيه أدوات CycloneDX لأغلب اللغات.</p>
+      <p><a href="https://cyclonedx.org/">cyclonedx.org</a></p>
+    </div>
+
+    <div class="block">
+      <h2>سؤال اليوم</h2>
+      <p class="question">لو انعلنت بكرة ثغرة خطيرة في مكتبة تستخدمونها، كم ساعة تحتاجون عشان تعرفون هل تطبيقكم متأثر فعلاً؟ ومين أول واحد بيعرف؟</p>
+    </div>
+
+    <div class="block sources">
+      <h2>المصادر</h2>
+      <ol>
+        <li><a href="https://blog.codacy.com/what-october-2026-taught-engineering-leaders-about-supply-chain-attacks">Codacy: What October 2026 taught engineering leaders about supply chain attacks</a></li>
+        <li><a href="https://pnpm.io/blog/releases/11.0">pnpm 11.0 release notes</a></li>
+        <li><a href="https://www.infoq.com/news/2026/04/pnpm-11-rc-release/">InfoQ: pnpm 11 RC, supply chain defaults</a></li>
+        <li><a href="https://vpncentral.com/?p=249721">pnpm 11 adds a 24-hour package delay</a></li>
+        <li><a href="https://dev.to/devsignal/nodejs-annual-releases-terraform-115-gemma-4-multimodal-3j3p">DEV: Node.js moves to annual releases</a></li>
+        <li><a href="https://ai.engineer/code/2026">AI Engineer Code Summit 2026</a></li>
+        <li><a href="https://cyclonedx.org/">CycloneDX</a></li>
+      </ol>
+    </div>
+
+    <div class="block">
+      <div class="tags"><span>هندسة البرمجيات</span><span>أمن</span><span>Supply Chain</span><span>pnpm</span></div>
+      <p class="signoff">نشوفكم بكرة الساعة 8 مع جرعة جديدة. يومكم سعيد 🤍<br><b>جرعة</b></p>
+    </div>
