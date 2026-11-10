@@ -23,6 +23,7 @@
         interests = interests.replace(/\s+/g, ' ').trim().slice(0, 200);
         if (interests) d.append('metadata__interests', interests);
         var b = f.querySelector('button'); b.disabled = true;
+        done(f, 'جاري الاشتراك…', true);
         fetch(f.action, { method: 'POST', mode: 'no-cors', body: d }).then(function () {
           f.reset(); done(f, 'تم! راجع بريدك وأكّد الاشتراك، وأول جرعة توصلك الساعة 8 الصبح.', true);
         }).catch(function () {
@@ -39,6 +40,7 @@
         e.preventDefault();
         if (g._honey.value) return;
         var b = g.querySelector('button'); b.disabled = true;
+        done(g, 'جاري الإرسال…', true);
         fetch('https://formsubmit.co/ajax/' + encodeURIComponent(fs), {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
