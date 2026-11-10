@@ -351,3 +351,18 @@ blockquote{margin:0;padding:14px 18px;border-right:3px solid var(--accent);backg
 .suggest-form input:focus,.suggest-form textarea:focus,.join-form input:focus{outline:2px solid var(--accent);outline-offset:1px}
 .suggest-form button{justify-self:start;margin-top:10px}
 .suggest .join-msg.ok{color:var(--accent)}
+
+/* ── share selected text ───────────────────── */
+.sharebar{position:absolute;z-index:40;display:flex;align-items:center;gap:4px;padding:5px;background:#141414;border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.22);font-family:var(--display)}
+.sharebar[hidden]{display:none}
+.sharebar button{display:inline-flex;align-items:center;gap:7px;border:0;background:transparent;color:#EDEDEA;font:600 14px/1 var(--display);padding:9px 12px;border-radius:7px;cursor:pointer;white-space:nowrap}
+.sharebar button:hover{background:#2a2a2a}
+.sharebar button.pri{background:var(--accent);color:#fff}
+.sharebar button.pri:hover{filter:brightness(1.1);background:var(--accent)}
+.sharebar button:disabled{opacity:.6;cursor:wait}
+.sharebar svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.sharebar-st{font-size:13px;color:#E5604F;padding:0 6px}
+.sharebar-st:empty{display:none}
+::target-text{background:color-mix(in srgb,var(--accent) 22%,transparent);color:inherit}
+.body ::selection{background:color-mix(in srgb,var(--accent) 24%,transparent)}
+@media (max-width:480px){.sharebar button span{font-size:13px}.sharebar button{padding:9px 10px}}
