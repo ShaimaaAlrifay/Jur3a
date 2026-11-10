@@ -3,7 +3,7 @@
   var body = document.querySelector('.body');
   if (!body) return;
 
-  var C = { ink: '#111111', faded: '#BEBAB1', muted: '#6B6A66', accent: '#B3261E', accent2: '#E5604F', mark: 'rgba(179,38,30,.15)', cream: '#F4F1EA' };
+  var C = { ink: '#111111', faded: '#BEBAB1', muted: '#6B6A66', accent: '#E5604F', accent2: '#E5604F', mark: 'rgba(229,96,79,.16)', cream: '#F4F1EA' }; // one brand colour: the logo dot
   var ARABIC = /[؀-ۿݐ-ݿﭐ-﷿ﹰ-﻿]/;
   var BLOCKS = 'p,li,blockquote,h2,h3,h4,dd,dt,figcaption,td,th,pre';
   var FORMATS = {
@@ -427,7 +427,7 @@
     } else {
       var L = { sq: { ch: 420, safeTop: 0, safeBottom: 0, qm: 110, mf: 52, mn: 32, cx: 9 },
                 pt: { ch: 560, safeTop: 0, safeBottom: 0, qm: 150, mf: 60, mn: 34, cx: 14 },
-                st: { ch: 800, safeTop: 150, safeBottom: 200, qm: 160, mf: 66, mn: 38, cx: 20 } }[fmt] || {};
+                st: { ch: 820, safeTop: 30, safeBottom: 28, qm: 160, mf: 66, mn: 38, cx: 24 } }[fmt] || {};
       drawCover(ctx, img, { x: 0, y: 0, w: W, h: L.ch }, m, L.safeTop);
       drawPaper(ctx, s, { x: 0, y: L.ch, w: W, h: H - L.ch }, m, { pad: 72, safeBottom: L.safeBottom, quoteMark: L.qm, maxFont: L.mf, minFont: L.mn, context: L.cx });
       ctx.fillStyle = C.accent; ctx.fillRect(0, L.ch, W, 6);
