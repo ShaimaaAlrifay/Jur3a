@@ -107,7 +107,7 @@
     var before = full.slice(0, a).split(' ').filter(Boolean);
     var mid = full.slice(a, z).split(' ').filter(Boolean);
     var after = full.slice(z).split(' ').filter(Boolean);
-    var MAXC = 22, cutB = false, cutA = false;
+    var MAXC = 14, cutB = false, cutA = false;
     if (before.length > MAXC) { before = before.slice(-MAXC); cutB = true; }
     for (var k = 0; k < before.length - 1; k++) if (/[.!؟?:]$/.test(before[k])) { before = before.slice(k + 1); cutB = false; k = -1; if (before.length < 4) break; }
     if (after.length > MAXC) { after = after.slice(0, MAXC); cutA = true; }
@@ -242,24 +242,38 @@
     ctx.font = '700 150px "Amiri",serif';
     ctx.fillText('”', W - P + 6, CH + 150);
 
-    // quote text, auto-fit
-    var items = runs(s.text.split(' ').map(function (w) { return { w: w, s: true }; }));
-    var top = CH + 150, bottom = H - 190, maxW = W - 2 * P, fs = 64, lh, lines;
+    // quote: the selected words in ink with a red marker, the rest of the paragraph faded around them
+    var items = runs(tokens(s));
+    var top = CH + 150, bottom = H - 190, maxW = W - 2 * P, fs = 60, lh, lines;
     for (; fs >= 28; fs -= 2) {
       lh = fs * 1.75;
       lines = layout(ctx, items, fs, maxW);
       if (lines.length * lh <= bottom - top) break;
     }
-    if (lines.length * lh > bottom - top) { // still too long: cut and add …
-      var max = Math.floor((bottom - top) / lh); lines = lines.slice(0, max);
-      var last = lines[max - 1]; last[last.length - 1] = { w: last[last.length - 1].w + '…', s: true, ltr: false, width: last[last.length - 1].width + fs * .6 };
+    if (lines.length * lh > bottom - top) { // still too long: keep the lines around the selection
+      var max = Math.floor((bottom - top) / lh), first = 0;
+      for (var q = 0; q < lines.length; q++) if (lines[q].some(function (it) { return it.s; })) { first = q; break; }
+      first = Math.max(0, Math.min(first, lines.length - max));
+      lines = lines.slice(first, first + max);
     }
-    var y = top + fs * 1.05;
+    var y = top + ((bottom - top) - lines.length * lh) / 2 + fs * 1.1;
     lines.forEach(function (line) {
-      var x = W - P, sp = fs * 0.28;
+      var x = W - P, sp = fs * 0.28, spanR = null, spanL = null;
+      function flush() {
+        if (spanR === null) return;
+        ctx.fillStyle = C.mark; ctx.fillRect(spanL, y - fs * 1.02, spanR - spanL, fs * 1.45);
+        ctx.fillStyle = C.accent; ctx.fillRect(spanL, y + fs * 0.4, spanR - spanL, 3);
+        spanR = spanL = null;
+      }
       line.forEach(function (it) {
-        ctx.font = '700 ' + fs + 'px "Noto Naskh Arabic","Readex Pro",serif';
-        ctx.fillStyle = C.ink; ctx.direction = it.ltr ? 'ltr' : 'rtl'; ctx.textAlign = 'right';
+        if (it.s) { if (spanR === null) spanR = x + 8; spanL = x - it.width - 8; } else flush();
+        x -= it.width + sp;
+      });
+      flush();
+      x = W - P;
+      line.forEach(function (it) {
+        ctx.font = (it.s ? '700 ' : '400 ') + fs + 'px "Noto Naskh Arabic","Readex Pro",serif';
+        ctx.fillStyle = it.s ? C.ink : C.faded; ctx.direction = it.ltr ? 'ltr' : 'rtl'; ctx.textAlign = 'right';
         ctx.fillText(it.w, x, y);
         x -= it.width + sp;
       });
