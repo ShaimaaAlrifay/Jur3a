@@ -10,7 +10,7 @@ Always set:
   EMAIL_TO  comma-separated recipients (sent as BCC, so they don't see each other)
   SITE_URL  public site URL without trailing slash
 """
-import json, os, smtplib, sys, urllib.request, urllib.error
+import datetime, json, os, smtplib, sys, urllib.request, urllib.error
 from email.message import EmailMessage
 from email.utils import formataddr
 
@@ -86,6 +86,15 @@ def send_buttondown(subject, html, text):
 
 
 def main():
+    # Only email an issue on the day it is published, so edits to older issues never resend anything.
+    try:
+        latest = max(json.load(open("issues.json", encoding="utf-8"))["issues"], key=lambda i: i["number"])
+        riyadh_today = (datetime.datetime.utcnow() + datetime.timedelta(hours=3)).date().isoformat()
+        if latest["date"] != riyadh_today and not os.environ.get("FORCE_SEND"):
+            print(f"Latest issue #{latest['number']} is dated {latest['date']}, not today ({riyadh_today}); not emailing.")
+            return
+    except FileNotFoundError:
+        pass
     subject, html, text = build()
     if os.environ.get("BUTTONDOWN_API_KEY"):
         try:
