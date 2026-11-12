@@ -70,36 +70,56 @@ jobs:
         uses: anthropics/claude-code-action@v1
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          show_full_output: "true"
           prompt: |
             TODAY: ${{ steps.pre.outputs.today }}
             WEEKDAY: ${{ steps.pre.outputs.weekday }}
-            DRY_RUN: ${{ inputs.dry_run == true }}
 
-            Read prompts/daily-action.md and follow it exactly.
-            If DRY_RUN is true: do every step including the commit, but DO NOT run git push.
+            Read prompts/daily-action.md and follow it exactly. Commit, but never push.
           claude_args: |
+            --model claude-opus-5-5
             --max-turns 120
             --allowedTools "Read,Write,Edit,Glob,Grep,WebSearch,WebFetch,Bash(python3:*),Bash(git:*),Bash(ls:*),Bash(grep:*),Bash(cat:*),Bash(head:*),Bash(wc:*)"
 
-      - name: Check the test issue (dry run)
-        if: steps.pre.outputs.go == 'true' && inputs.dry_run == true
+      - name: Verify the research and the issue
+        id: verify
+        if: steps.pre.outputs.go == 'true'
+        env:
+          TODAY: ${{ steps.pre.outputs.today }}
         run: |
-          TODAY=${{ steps.pre.outputs.today }}
-          python3 - <<PY
-          import json, os, re
+          python3 - <<'PY'
+          import json, os, re, glob
+          from html.parser import HTMLParser
+          today = os.environ["TODAY"]
+          # 1) real web research happened
+          log = ""
+          for f in glob.glob(os.path.join(os.environ["RUNNER_TEMP"], "claude-execution-output*.json")):
+              log += open(f, encoding="utf-8", errors="ignore").read()
+          searches = len(re.findall(r'"name":\s*"WebSearch"', log))
+          fetches = len(re.findall(r'"name":\s*"WebFetch"', log))
+          print(f"web research: {searches} searches, {fetches} page reads")
+          assert searches + fetches >= 4, "Not enough web research — refusing to publish an issue written from memory."
+          # 2) the issue exists and is well-formed
           d = json.load(open("issues.json", encoding="utf-8"))["issues"]
-          i = [x for x in d if x["date"] == "$TODAY"]
-          assert i, "no issue written for $TODAY"
-          i = i[-1]; f = f"issues/{i['slug']}.html"
-          assert os.path.exists(f), f"{f} missing"
-          t = open(f, encoding="utf-8").read()
+          mine = [x for x in d if x["date"] == today]
+          assert len(mine) == 1, f"expected exactly one issue for {today}, found {len(mine)}"
+          i = mine[0]; f = f"issues/{i['slug']}.html"; src = f"src/{i['slug']}.html"
+          assert os.path.exists(f) and os.path.exists(src), "issue files missing"
+          t = open(f, encoding="utf-8").read(); s = open(src, encoding="utf-8").read()
           assert not re.search("[٠-٩]", t), "Arabic-Indic digits found"
-          print("OK:", i["number"], i["topic"], "|", i["title"], "|", len(t), "bytes")
+          assert len(re.findall(r'<a href="https?://', s)) >= 2, "fewer than 2 source links"
+          for li in re.findall(r'<ol class="steps">(.*?)</ol>', s, re.S):
+              assert all(x.startswith("<span>") for x in re.findall(r"<li>(.{6})", li)), "steps items must be wrapped in <span>"
+          class P(HTMLParser):
+              def __init__(s): super().__init__(); s.st=[]; s.err=0
+              def handle_starttag(s,tag,a):
+                  if tag not in ("br","img","meta","link","input","hr","source"): s.st.append(tag)
+              def handle_endtag(s,tag):
+                  if s.st and s.st[-1]==tag: s.st.pop()
+                  else: s.err+=1
+          p = P(); p.feed(s); assert p.err == 0 and not p.st, "unbalanced HTML in the issue body"
+          print("OK:", i["number"], i["topic"], "|", i["title"])
           PY
-          git log --oneline -1
-          if git status -sb | grep -q ahead; then echo "Committed locally, not pushed (as expected)."; fi
-          git fetch -q origin main
-          git show origin/main:issues.json | grep -q "\"date\": \"$TODAY\"" && { echo "::error::Dry run pushed to main!"; exit 1; } || echo "main untouched."
 
       - name: Save the test issue
         if: steps.pre.outputs.go == 'true' && inputs.dry_run == true
@@ -110,6 +130,11 @@ jobs:
             issues/*.html
             src/*.html
             issues.json
+
+      - name: Publish
+        if: steps.pre.outputs.go == 'true' && inputs.dry_run != true
+        run: |
+          git push origin HEAD:main || { git pull --rebase -q origin main && git push origin HEAD:main; }
 
       - name: Confirm it was published
         id: post
