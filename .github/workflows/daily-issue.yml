@@ -7,6 +7,15 @@ on:
     - cron: "12 4 * * *"  # 07:12 Riyadh — main run
     - cron: "41 4 * * *"  # 07:41 Riyadh — backup in case GitHub delayed or dropped the first (does nothing if today's issue exists)
   workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Test: write tomorrow's issue but don't publish or email"
+        type: boolean
+        default: false
+      test_alert:
+        description: "Test: fail on purpose to check the failure email"
+        type: boolean
+        default: false
 
 concurrency:
   group: daily-issue
@@ -26,14 +35,25 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Test the failure alert
+        if: inputs.test_alert == true
+        run: |
+          echo "Failing on purpose to test the alert email."
+          exit 1
+
       - name: Check setup and today's date
         id: pre
         env:
           TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
         run: |
           if [ -z "$TOKEN" ]; then echo "CLAUDE_CODE_OAUTH_TOKEN is not set yet; skipping."; echo "go=false" >> "$GITHUB_OUTPUT"; exit 0; fi
-          TODAY=$(TZ=Asia/Riyadh date +%F)
-          WEEKDAY=$(TZ=Asia/Riyadh date +%A)
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            TODAY=$(TZ=Asia/Riyadh date -d tomorrow +%F); WEEKDAY=$(TZ=Asia/Riyadh date -d tomorrow +%A)
+            echo "DRY RUN for $TODAY"
+            git remote set-url --push origin DISABLED_IN_DRY_RUN   # makes any push impossible
+          else
+            TODAY=$(TZ=Asia/Riyadh date +%F); WEEKDAY=$(TZ=Asia/Riyadh date +%A)
+          fi
           echo "today=$TODAY" >> "$GITHUB_OUTPUT"
           echo "weekday=$WEEKDAY" >> "$GITHUB_OUTPUT"
           if python3 -c "import json,sys; sys.exit(0 if any(i['date']=='$TODAY' for i in json.load(open('issues.json'))['issues']) else 1)"; then
@@ -53,15 +73,47 @@ jobs:
           prompt: |
             TODAY: ${{ steps.pre.outputs.today }}
             WEEKDAY: ${{ steps.pre.outputs.weekday }}
+            DRY_RUN: ${{ inputs.dry_run == true }}
 
             Read prompts/daily-action.md and follow it exactly.
+            If DRY_RUN is true: do every step including the commit, but DO NOT run git push.
           claude_args: |
             --max-turns 120
             --allowedTools "Read,Write,Edit,Glob,Grep,WebSearch,WebFetch,Bash(python3:*),Bash(git:*),Bash(ls:*),Bash(grep:*),Bash(cat:*),Bash(head:*),Bash(wc:*)"
 
+      - name: Check the test issue (dry run)
+        if: steps.pre.outputs.go == 'true' && inputs.dry_run == true
+        run: |
+          TODAY=${{ steps.pre.outputs.today }}
+          python3 - <<PY
+          import json, os, re
+          d = json.load(open("issues.json", encoding="utf-8"))["issues"]
+          i = [x for x in d if x["date"] == "$TODAY"]
+          assert i, "no issue written for $TODAY"
+          i = i[-1]; f = f"issues/{i['slug']}.html"
+          assert os.path.exists(f), f"{f} missing"
+          t = open(f, encoding="utf-8").read()
+          assert not re.search("[٠-٩]", t), "Arabic-Indic digits found"
+          print("OK:", i["number"], i["topic"], "|", i["title"], "|", len(t), "bytes")
+          PY
+          git log --oneline -1
+          if git status -sb | grep -q ahead; then echo "Committed locally, not pushed (as expected)."; fi
+          git fetch -q origin main
+          git show origin/main:issues.json | grep -q "\"date\": \"$TODAY\"" && { echo "::error::Dry run pushed to main!"; exit 1; } || echo "main untouched."
+
+      - name: Save the test issue
+        if: steps.pre.outputs.go == 'true' && inputs.dry_run == true
+        uses: actions/upload-artifact@v4
+        with:
+          name: dry-run-issue
+          path: |
+            issues/*.html
+            src/*.html
+            issues.json
+
       - name: Confirm it was published
         id: post
-        if: steps.pre.outputs.go == 'true'
+        if: steps.pre.outputs.go == 'true' && inputs.dry_run != true
         run: |
           git fetch -q origin main
           TODAY=${{ steps.pre.outputs.today }}
