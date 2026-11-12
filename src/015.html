@@ -1,0 +1,109 @@
+    <div class="block">
+      <p class="opener">صباح الخير ☕ تطبيقكم ممكن ما يكرّش ولا يتأخر ولا يعلّق، ومع ذلك Google Play يخفيه من التوصيات. السبب؟ بطارية جوال المستخدم تروح وهو نايم.</p>
+      <div class="tldr">
+        <strong>الزبدة</strong>
+        <ul class="clean">
+          <li>من 1 مارس 2026 بدأت Google Play تعاقب التطبيقات اللي تمسك <span class="en">partial wake lock</span> أكثر من اللازم: تحذير في صفحة التطبيق واستبعاد من التوصيات.</li>
+          <li>الحد: ساعتين في المتوسط والشاشة مطفية، في أكثر من 5٪ من الجلسات خلال 28 يوم.</li>
+          <li>اليوم: وش يعني <span class="en">wake lock</span>، وإصلاح 5 حالات شائعة، وقائمة فحص.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="divider" aria-hidden="true">* * *</div>
+
+    <div class="block">
+      <h2>وش اللي تغيّر؟</h2>
+      <p>الـ <span class="en">partial wake lock</span> أداة في <code>PowerManager</code> تخلي المعالج شغال حتى بعد ما تنطفي الشاشة. مفيدة أحياناً، لكن لو بقيت ممسوكة يظل الجهاز ما ينزل لحالات توفير الطاقة، والبطارية تخلص.</p>
+      <p>في 1 مارس 2026 بدأت Google Play تطبق «المعالجات الفنية» على التطبيقات المخالفة تدريجياً خلال الأسابيع اللي بعدها. التطبيق اللي يتجاوز الحد باستمرار ممكن يظهر عنده <b>تحذير في صفحته في المتجر</b>، ويُستبعد من واجهات الاكتشاف مثل التوصيات. وبكذا صارت البطارية مؤشر أساسي في <span class="en">Android vitals</span> مثل الأعطال وتعليق التطبيق (<span class="en">ANR</span>).</p>
+    </div>
+
+    <div class="divider" aria-hidden="true">* * *</div>
+
+    <div class="block">
+      <h2>الأرقام</h2>
+      <div class="bites">
+        <div class="bite"><span class="tag">⏱ ساعتان</span><p>متوسط مدة <span class="en">wake lock</span> غير مستثنى، والشاشة مطفية.</p></div>
+        <div class="bite"><span class="tag">📊 5٪</span><p>نسبة الجلسات اللي لو تعدّاها التطبيق يدخل منطقة الخطر.</p></div>
+        <div class="bite"><span class="tag">📅 28 يوم</span><p>المدة اللي تنحسب عليها النسبة.</p></div>
+      </div>
+      <p>المستثنى: الأقفال اللي لها فايدة واضحة للمستخدم ولا يمكن تحسينها أكثر، مثل تشغيل الصوت والموقع ونقل البيانات اللي يبدأه المستخدم. وتوثيق Google يوضح إن الحساب يشمل فقط القفل الممسوك والتطبيق بالخلفية أو يشغّل <span class="en">foreground service</span>.</p>
+      <p class="note">ملاحظة: بعض المصادر تكتب «أكثر من ساعتين» ووثائق Google تكتب «ساعتين أو أكثر». ارجعوا لصفحة <span class="en">Android vitals</span> للتعريف الحالي قبل ما تبنون عليه.</p>
+    </div>
+
+    <div class="divider" aria-hidden="true">* * *</div>
+
+    <div class="block">
+      <h2>خمس حالات وعلاجها</h2>
+      <ol class="steps">
+        <li><span><b>تنزيل أو رفع يبدأه المستخدم.</b> لا تمسكون قفل يدوي. استخدموا واجهة <span class="en">User-Initiated Data Transfer (UIDT)</span>، وهي المستثناة من الحساب.</span></li>
+        <li><span><b>مزامنة دورية بالخلفية.</b> استخدموا <span class="en">WorkManager</span> بدل القفل اليدوي. أقل فترة دورية 15 دقيقة، وهو يجمّع المهام لتوفير الطاقة. ولو القفل جاي من الـ <span class="en">worker</span> نفسه، راقبوا سبب التوقف (<code>stopReason</code>) خصوصاً <code>STOP_REASON_TIMEOUT</code>.</span></li>
+        <li><span><b>تتبع الموقع.</b> النظام يصحّي الجهاز لحظياً عند كل تحديث موقع، وهذا مستثنى. لا تضيفون قفل مستمر فوقه؛ خزنوا النقاط في الذاكرة أو التخزين، وعالجوها دورياً بـ <span class="en">WorkManager</span>.</span></li>
+        <li><span><b>حساسات عالية التردد.</b> سجّلوا الحساس مع <code>maxReportLatencyUs</code> بقيمة 30 ثانية أو أكثر عشان تنجمّع القراءات. ولعدّاد الخطوات، جربوا <span class="en">Health Connect</span> أو <span class="en">Recording API</span> بدل الحساس المباشر.</span></li>
+        <li><span><b>رسائل ومقابس شبكة.</b> إذا تقدرون، خلوها على <span class="en">FCM</span>. وإذا لازم <span class="en">socket</span>، المعالج ما يحتاج قفل وهو ينتظر؛ امسكوا القفل فقط وقت معالجة الحزمة اللي وصلت.</span></li>
+      </ol>
+    </div>
+
+    <div class="divider" aria-hidden="true">* * *</div>
+
+    <div class="block">
+      <h2>قبل وبعد</h2>
+      <p>مثال مبسط لفكرة «امسك القفل على قد الشغل بس»:</p>
+<pre>// قبل: القفل ممسوك طول ما التطبيق شغال
+wakeLock.acquire()
+while (!channel.isClosedForRead) { handle(channel.read()) }
+
+// بعد: ننتظر بدون قفل، ونمسكه وقت المعالجة فقط
+while (!channel.isClosedForRead) {
+    val packet = channel.read()   // المعالج ممكن ينام هنا
+    performWorkWithWakeLock { handle(packet) }
+}</pre>
+    </div>
+
+    <div class="divider" aria-hidden="true">* * *</div>
+
+    <div class="block">
+      <h2>قائمة الفحص هالأسبوع</h2>
+      <ul class="check">
+        <li><span>افتحوا في <span class="en">Play Console</span> لوحة <span class="en">Excessive partial wake locks</span> وشوفوا أسماء الأقفال المخالفة.</span></li>
+        <li><span>إذا ما عرفتم صاحب القفل، التقطوا <span class="en">system trace</span> وافحصوه في <span class="en">Perfetto</span>.</span></li>
+        <li><span>شكّوا في المكتبات الخارجية (<span class="en">SDK</span>) أولاً، فكثير مرات القفل منها مو منكم. تواصلوا مع صاحبها أو ابحثوا عن بديل.</span></li>
+        <li><span>اسألوا عن كل <code>acquire()</code> في الكود: وين الـ <code>release()</code>؟ وهل له <span class="en">timeout</span>؟</span></li>
+        <li><span>اختبروا ليلة كاملة على جهاز والشاشة مطفية، وقارنوا استهلاك البطارية قبل وبعد.</span></li>
+      </ul>
+    </div>
+
+    <div class="divider" aria-hidden="true">* * *</div>
+
+    <div class="block">
+      <h2>خطأ شائع</h2>
+      <div class="mf">
+        <div class="myth"><small>الاعتقاد</small><b>«عندي <span class="en">foreground service</span>، يعني الجهاز ما بينام.»</b></div>
+        <div class="fact"><small>الواقع</small>الـ <span class="en">foreground service</span> يقول للنظام إن شغلكم مرئي للمستخدم وما يُقتل عند ضغط الذاكرة، لكنه ما يمنع المعالج من النوم. اللي يمنعه هو الـ <span class="en">wake lock</span>، فلا تمسكونه إلا وقت الشغل الفعلي.</div>
+      </div>
+    </div>
+
+    <div class="divider" aria-hidden="true">* * *</div>
+
+    <div class="block">
+      <h2>سؤال اليوم</h2>
+      <p class="question">كم <span class="en">wake lock</span> في تطبيقكم؟ وهل تعرفون مين اللي يفتحه ومتى يسكّره؟</p>
+    </div>
+
+    <div class="divider" aria-hidden="true">* * *</div>
+
+    <div class="block sources">
+      <h2>المصادر</h2>
+      <ol>
+        <li><a href="https://android-developers.googleblog.com/2026/03/battery-technical-quality-enforcement.html">Android Developers Blog: Battery technical quality enforcement</a></li>
+        <li><a href="https://developer.android.com/blog/posts/battery-technical-quality-enforcement-is-here-how-to-optimize-common-wake-lock-use-cases">Android Developers: Battery Technical Quality Enforcement is Here (4 Mar 2026)</a></li>
+        <li><a href="https://developer.android.com/topic/performance/vitals/wakelock">Android Developers: Excessive partial wake locks (Android vitals)</a></li>
+      </ol>
+    </div>
+
+    <div class="divider" aria-hidden="true">* * *</div>
+
+    <div class="block">
+      <div class="tags"><span>تطوير التطبيقات</span><span>Android</span><span>البطارية</span><span>Google Play</span></div>
+      <p class="signoff">نشوفكم بكرة الساعة 8 مع جرعة جديدة. يومكم سعيد 🤍<br><b>جرعة</b></p>
+    </div>
