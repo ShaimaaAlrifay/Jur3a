@@ -1,0 +1,93 @@
+# Writes and publishes today's issue every morning, then emails it.
+# Needs one secret: CLAUDE_CODE_OAUTH_TOKEN (run `claude setup-token` on your Mac and paste the result).
+name: Daily issue
+
+on:
+  schedule:
+    - cron: "5 4 * * *"   # 07:05 Riyadh — GitHub can start scheduled runs a little late
+  workflow_dispatch:
+
+concurrency:
+  group: daily-issue
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  issue:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check setup and today's date
+        id: pre
+        env:
+          TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+        run: |
+          if [ -z "$TOKEN" ]; then echo "CLAUDE_CODE_OAUTH_TOKEN is not set yet; skipping."; echo "go=false" >> "$GITHUB_OUTPUT"; exit 0; fi
+          TODAY=$(TZ=Asia/Riyadh date +%F)
+          WEEKDAY=$(TZ=Asia/Riyadh date +%A)
+          echo "today=$TODAY" >> "$GITHUB_OUTPUT"
+          echo "weekday=$WEEKDAY" >> "$GITHUB_OUTPUT"
+          if python3 -c "import json,sys; sys.exit(0 if any(i['date']=='$TODAY' for i in json.load(open('issues.json'))['issues']) else 1)"; then
+            echo "Issue for $TODAY already exists."; echo "go=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "go=true" >> "$GITHUB_OUTPUT"
+          fi
+          echo "before=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+          git config user.name "Claude"
+          git config user.email "noreply@anthropic.com"
+
+      - name: Write the issue with Claude
+        if: steps.pre.outputs.go == 'true'
+        uses: anthropics/claude-code-action@v1
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          prompt: |
+            TODAY: ${{ steps.pre.outputs.today }}
+            WEEKDAY: ${{ steps.pre.outputs.weekday }}
+
+            Read prompts/daily-action.md and follow it exactly.
+          claude_args: |
+            --max-turns 120
+            --allowedTools "Read,Write,Edit,Glob,Grep,WebSearch,WebFetch,Bash(python3:*),Bash(git:*),Bash(ls:*),Bash(grep:*),Bash(cat:*),Bash(head:*),Bash(wc:*)"
+
+      - name: Confirm it was published
+        id: post
+        if: steps.pre.outputs.go == 'true'
+        run: |
+          git fetch -q origin main
+          TODAY=${{ steps.pre.outputs.today }}
+          if git show origin/main:issues.json | python3 -c "import json,sys; sys.exit(0 if any(i['date']=='$TODAY' for i in json.load(sys.stdin)['issues']) else 1)"; then
+            echo "published=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "::error::No issue for $TODAY was pushed."; exit 1
+          fi
+
+      # Pushes made inside a workflow don't start other workflows, so deploy and email from here.
+      - name: Rebuild GitHub Pages
+        if: steps.post.outputs.published == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh api -X POST "repos/${{ github.repository }}/pages/builds" || echo "Pages will rebuild on its own."
+
+      - name: Email subscribers
+        if: steps.post.outputs.published == 'true'
+        env:
+          BUTTONDOWN_API_KEY: ${{ secrets.BUTTONDOWN_API_KEY }}
+          SMTP_USER: ${{ vars.SMTP_USER }}
+          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          EMAIL_FROM: ${{ vars.EMAIL_FROM }}
+          EMAIL_TO: ${{ vars.EMAIL_TO }}
+          SITE_URL: ${{ vars.SITE_URL }}
+        run: |
+          git pull -q origin main
+          sleep 90
+          python3 scripts/notify.py
