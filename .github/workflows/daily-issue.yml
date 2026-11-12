@@ -4,7 +4,8 @@ name: Daily issue
 
 on:
   schedule:
-    - cron: "5 4 * * *"   # 07:05 Riyadh — GitHub can start scheduled runs a little late
+    - cron: "12 4 * * *"  # 07:12 Riyadh — main run
+    - cron: "41 4 * * *"  # 07:41 Riyadh — backup in case GitHub delayed or dropped the first (does nothing if today's issue exists)
   workflow_dispatch:
 
 concurrency:
@@ -91,3 +92,27 @@ jobs:
           git pull -q origin main
           sleep 90
           python3 scripts/notify.py
+
+      - name: Alert the owner if anything failed
+        if: failure()
+        env:
+          SMTP_USER: ${{ vars.SMTP_USER }}
+          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          python3 - <<'PY'
+          import os, smtplib
+          from email.mime.text import MIMEText
+          user, pw = os.environ.get("SMTP_USER"), os.environ.get("SMTP_PASSWORD")
+          if not (user and pw):
+              raise SystemExit("No Gmail credentials for the alert.")
+          body = "ما انتشر عدد اليوم من جرعة.\n\nسجل التشغيل:\n" + os.environ["RUN_URL"] + "\n\nتقدرين تعيدينه من Actions ← Daily issue ← Run workflow."
+          msg = MIMEText(body, "plain", "utf-8")
+          msg["Subject"] = "⚠️ جرعة: فشل النشر"
+          msg["From"] = user
+          msg["To"] = user
+          with smtplib.SMTP_SSL("smtp.gmail.com", 465) as s:
+              s.login(user, pw)
+              s.send_message(msg)
+          print("alert sent")
+          PY
