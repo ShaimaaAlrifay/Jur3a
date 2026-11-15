@@ -83,6 +83,16 @@ def send_buttondown(subject, html, text):
         with urllib.request.urlopen(req) as r:
             print("sent via Buttondown:", r.status)
     try:
+        q = urllib.request.Request("https://api.buttondown.com/v1/emails?ordering=-creation_date",
+                                   headers={"Authorization": f"Token {os.environ['BUTTONDOWN_API_KEY']}"})
+        with urllib.request.urlopen(q) as r:
+            existing = json.load(r).get("results", [])
+        if any(e.get("subject") == subject for e in existing[:50]):
+            print("Buttondown already has an email with this subject; not sending again.")
+            return
+    except urllib.error.URLError as e:
+        print("could not check for duplicates:", e)
+    try:
         post(False)
     except urllib.error.HTTPError as e:
         detail = e.read().decode("utf-8", "replace")
