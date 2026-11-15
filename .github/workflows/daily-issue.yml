@@ -4,8 +4,13 @@ name: Daily issue
 
 on:
   schedule:
-    - cron: "12 4 * * *"  # 07:12 Riyadh — main run
-    - cron: "41 4 * * *"  # 07:41 Riyadh — backup in case GitHub delayed or dropped the first (does nothing if today's issue exists)
+    # GitHub often starts scheduled runs hours late, so try several times overnight (Riyadh times).
+    # The first run that works writes the issue; later runs see it exists and stop.
+    # The email is scheduled in Buttondown for exactly 08:00 Riyadh.
+    - cron: "13 21 * * *"  # 00:13
+    - cron: "47 23 * * *"  # 02:47
+    - cron: "29 1 * * *"   # 04:29
+    - cron: "11 3 * * *"   # 06:11
   workflow_dispatch:
     inputs:
       dry_run:
@@ -133,7 +138,12 @@ jobs:
 
       - name: Publish
         if: steps.pre.outputs.go == 'true' && inputs.dry_run != true
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
+          # the Claude step rewrites git's auth settings, so push with an explicit token
+          git config --local --unset-all http.https://github.com/.extraheader || true
+          git remote set-url origin "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git"
           git push origin HEAD:main || { git pull --rebase -q origin main && git push origin HEAD:main; }
 
       - name: Confirm it was published

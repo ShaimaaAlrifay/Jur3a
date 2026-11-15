@@ -67,7 +67,14 @@ def send_resend(subject, html, text):
 def send_buttondown(subject, html, text):
     """Send to every confirmed Buttondown subscriber (they sign up on the site)."""
     import json
-    payload = json.dumps({"subject": subject, "body": html, "status": "about_to_send"}).encode()
+    riyadh_date = (datetime.datetime.utcnow() + datetime.timedelta(hours=3)).date()
+    send_at = datetime.datetime.combine(riyadh_date, datetime.time(5, 0))  # 08:00 Riyadh, in UTC
+    if datetime.datetime.utcnow() < send_at - datetime.timedelta(minutes=5):
+        fields = {"status": "scheduled", "publish_date": send_at.strftime("%Y-%m-%dT%H:%M:%SZ")}
+        print("scheduling Buttondown email for", fields["publish_date"])
+    else:
+        fields = {"status": "about_to_send"}
+    payload = json.dumps({"subject": subject, "body": html, **fields}).encode()
     def post(confirm):
         h = {"Authorization": f"Token {os.environ['BUTTONDOWN_API_KEY']}", "Content-Type": "application/json"}
         if confirm:
