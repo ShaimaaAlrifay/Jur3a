@@ -1,0 +1,98 @@
+    <div class="block">
+      <p class="opener">صباح الخير ☕ أسبوع زحمة: أكبر طرح عام في تاريخ الذكاء الاصطناعي، وأرباح قياسية لـ Nvidia وسهمها نازل، وثغرتين خطيرتين في Java وNGINX. هذي الزبدة كلها في خمس دقايق.</p>
+      <div class="tldr">
+        <strong>الزبدة</strong>
+        <ul class="clean">
+          <li>قصة الأسبوع: <span class="en">agent</span> برمجي ساعد يلقى ثغرة في Java خلال ساعة، والتكلفة الكاملة حوالي 200 دولار.</li>
+          <li>Anthropic صارت أول مختبر ذكاء اصطناعي متقدم يُدرج في البورصة، وNvidia تكسب أكثر وسهمها ينزل.</li>
+          <li>إذا عندكم Java أو NGINX على سيرفرات، الترقيع اليوم مو بكرة.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="divider" aria-hidden="true">* * *</div>
+
+    <div class="block">
+      <h2>قصة الأسبوع</h2>
+      <p><b>ثغرة بسعر عشاء.</b> شركة الأمن الناشئة Calif أعلنت عن ثغرة في الـ <span class="en">Base64 decoder</span> داخل OpenJDK سمّتها <span class="en">Java4Shell</span> (CVE-2026-114938). الباحث Quang Luong وجّه <span class="en">Codex</span> من OpenAI يفحص أجزاء من OpenJDK، وحسب Calif أخذ اكتشاف الثغرة ساعة وبناء الـ <span class="en">exploit</span> ساعتين، والتكلفة حوالي 200 دولار <span class="en">tokens</span>.</p>
+      <p><b>ليش تهمكم؟</b> الثغرة موجودة في نسخ OpenJDK من 17.0.6 وطالع، يعني توزيعات كثيرة زي Oracle Java SE وCorretto وTemurin. Oracle طلّعت الترقيع في 17 نوفمبر، وفي نفس اليوم طلبت CISA من المؤسسات ترقّع فوراً، ونبّهت إن Java ممكن تكون مدفونة داخل تطبيقات وصور <span class="en">containers</span> ما تتوقعونها.</p>
+      <p><b>بس خففوا الحماس شوي.</b> الباحث نفسه قال إن جزء كبير من مخرجات الـ <span class="en">agent</span> كان رديء واحتاج فرز بشري، وCalif تقول ما فيه <span class="en">exploit</span> واحد يشتغل على كل الأنظمة. وتقييمات الخطورة تختلف: 8.1 عند Oracle و9.2 عند Calif. والدرس: البحث عن الثغرات صار أرخص وأسرع، فالوقت اللي عندكم عشان ترقّعون بيقصر.</p>
+    </div>
+
+    <div class="divider" aria-hidden="true">* * *</div>
+
+    <div class="block">
+      <h2>أهم الأخبار</h2>
+      <ol class="news">
+        <li><div><h3>Anthropic في البورصة</h3><p>بدت تتداول في Nasdaq يوم 19 نوفمبر بسعر طرح 83 دولار، وحصيلة الطرح مع اكتتاب خاص موازي حوالي 119.5 مليار دولار. سكّرت أول يوم على 97.17، وثاني يوم رجع السهم قريب من سعر الطرح.</p></div></li>
+        <li><div><h3>Nvidia: أرباح قياسية وسهم نازل</h3><p>إيرادات الربع 115.8 مليار دولار، يعني ضعف السنة اللي فاتت وزيادة. ومع كذا السهم في طريقه لسابع أسبوع خسارة على التوالي، أطول سلسلة له من 2008. وكاليفورنيا أرسلت لها أمر استدعاء تحقيقي تسأل فيه هل وصلت شرائح أو معلومات سرية للصين، والتحقيق ما زال في بدايته.</p></div></li>
+        <li><div><h3>قيود أمريكية جديدة على الحوسبة</h3><p>صار تصدير بعض الشرائح المتقدمة يحتاج ترخيص إذا كان لمراكز بيانات تخدم شركات مقرها الصين أو ماكاو، حتى لو مركز البيانات في دولة ثانية. والقاعدة أضافت متطلبات ترخيص لإندونيسيا وماليزيا وسنغافورة وتايلند والبرازيل.</p></div></li>
+        <li><div><h3>nginx2root: خمس ثغرات في NGINX</h3><p>انعلنت في 18 نوفمبر، ومنها ثغرة في HTTP/2 موجودة من إصدار 1.9.5 سنة 2015. Censys تقدّر إن فيه حوالي 8.8 مليون خدمة على نسخة ممكن تكون متأثرة. الإصدارات المرقّعة 1.30.7 و1.31.9.</p></div></li>
+        <li><div><h3>Google تحجز صاروخ لمراكز بيانات في الفضاء</h3><p>مشروع <span class="en">Suncatcher</span> اختار صاروخ New Glenn من Blue Origin لأول إطلاق ثقيل مخصص له، والموعد المستهدف الربع الأول من 2029. كل قمر صناعي فيه شرائح TPU بقدرة حوسبة تقارب خزانة سيرفرات كاملة في مركز بيانات.</p></div></li>
+        <li><div><h3>GTA VI تكسر الأرقام</h3><p>Rockstar أعلنت مبيعات 3.79 مليار دولار في أول يوم، و32.5 مليون نسخة انباعت قبل الإطلاق.</p></div></li>
+      </ol>
+    </div>
+
+    <div class="divider" aria-hidden="true">* * *</div>
+
+    <div class="block">
+      <h2>طبّقوها اليوم</h2>
+      <ul class="check">
+        <li><span><b>اعرفوا وين Java عندكم:</b> مو بس السيرفرات، كمان صور الـ <span class="en">Docker</span> والأدوات الجاهزة اللي فيها Java داخلها. أي نسخة من 17.0.6 وطالع ومو مرقّعة تحتاج تحديث.</span></li>
+        <li><span><b>حدّثوا NGINX وسوّوا restart:</b> Cloudflare تنبّه إن الـ <code>reload</code> ما يبدّل البرنامج نفسه. وإذا تستخدمون توزيعة Linux، شيكوا إن الترقيع وصلكم حتى لو رقم النسخة ما تغيّر.</span></li>
+        <li><span><b>إذا ما تقدرون تحدّثون الحين:</b> وقفوا HTTP/2 وHTTP/3 مؤقتاً، وخلّوا السيرفر ما يستقبل إلا من خلف الـ <span class="en">proxy</span>.</span></li>
+        <li><span><b>انتبهوا من الـ exploits المزيفة:</b> فيه أكواد استغلال مزيفة تنتشر في GitHub. لا تشغلون شي ما تعرفون مصدره.</span></li>
+      </ul>
+    </div>
+
+    <div class="divider" aria-hidden="true">* * *</div>
+
+    <div class="block">
+      <h2>مقال يستاهل وقتكم</h2>
+      <div class="box fill">
+        <span class="cap">Cloudflare Blog · Daniele Molteni</span>
+        <p><b><span class="en">nginx2root: five new nginx vulnerabilities, and how Cloudflare protects origins from the worst of them</span></b></p>
+        <p>مثال ممتاز لكتابة تقرير ثغرة: جدول للثغرات الخمس والإعدادات اللي تتأثر بكل وحدة، وجدول زمني من الاكتشاف للإعلان، وخطوات واضحة للترقيع والحماية المؤقتة. حتى لو ما تستخدمون NGINX، اقرأوه كنموذج لأي تقرير حادثة تكتبونه.</p>
+        <p><a href="https://blog.cloudflare.com/nginx2root/">اقرأوا المقال ←</a></p>
+      </div>
+    </div>
+
+    <div class="divider" aria-hidden="true">* * *</div>
+
+    <div class="block">
+      <h2>رقم الأسبوع</h2>
+      <div class="bignum">
+        <span class="n">200$</span>
+        <p>تكلفة الـ <span class="en">tokens</span> اللي صرفتها Calif، حسب كلامها، عشان تكتشف <span class="en">Java4Shell</span> وتبني لها <span class="en">exploit</span> خلال ثلاث ساعات.</p>
+      </div>
+    </div>
+
+    <div class="divider" aria-hidden="true">* * *</div>
+
+    <div class="block">
+      <h2>سؤال الأسبوع</h2>
+      <p class="question">إذا صار اكتشاف ثغرة يكلّف المهاجم 200 دولار وساعة، وش أول نظام عندكم بتشغّلون عليه نفس الفحص قبل ما يسبقكم له أحد؟</p>
+    </div>
+
+    <div class="divider" aria-hidden="true">* * *</div>
+
+    <div class="block sources">
+      <h2>المصادر</h2>
+      <ol>
+        <li><a href="https://www.bankinfosecurity.com/ai-agent-finds-critical-java-flaw-in-just-3-hours-a-33427">BankInfoSecurity: AI Agent Finds Critical Java Flaw in Just 3 Hours</a></li>
+        <li><a href="https://therecord.media/cisa-issues-java4shell-alert">The Record: CISA issues Java4Shell alert</a></li>
+        <li><a href="https://content.govdelivery.com/accounts/USDHSCISA/bulletins/4332a87">CISA: Critical Java Vulnerability Requires Immediate Patching</a></li>
+        <li><a href="https://www.informationweek.com/machine-learning-ai/the-week-of-nov-16-20-what-happened-what-matters-what-s-next">InformationWeek: The week of Nov. 16–20</a></li>
+        <li><a href="https://techstartups.com/2026/11/20/top-tech-news-roundup-for-today-november-20-2026-anthropic-stock-slides-gta-vi-hits-3-79-billion-nvidia-faces-subpoena-more/">Tech Startups: Top Tech News Roundup, November 20, 2026</a></li>
+        <li><a href="https://oag.ca.gov/news/press-releases/attorney-general-bonta-serves-investigative-subpoena-nvidia">California AG: Investigative subpoena to Nvidia</a></li>
+        <li><a href="https://blog.cloudflare.com/nginx2root/">Cloudflare: nginx2root</a></li>
+        <li><a href="https://blog.google/innovation-and-ai/models-and-research/google-research/blue-origin-project-suncatcher-partnership/">Google: Blue Origin and Project Suncatcher</a></li>
+      </ol>
+    </div>
+
+    <div class="divider" aria-hidden="true">* * *</div>
+
+    <div class="block">
+      <div class="tags"><span>خلاصة التقنية</span><span>أمن</span><span>Java4Shell</span><span>Anthropic</span><span>Nvidia</span></div>
+      <p class="signoff">نشوفكم بكرة الساعة 8 مع جرعة جديدة. يومكم سعيد 🤍<br><b>جرعة</b></p>
+    </div>
