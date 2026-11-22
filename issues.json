@@ -244,6 +244,17 @@
    "title": "ثغرة بـ200 دولار",
    "subtitle": "أسبوع اكتشف فيه agent ثغرة خطيرة في Java خلال ساعة، ودخلت Anthropic البورصة، ونزل سهم Nvidia رغم أرباحها القياسية.",
    "cover": "assets/covers/digest.jpg"
+  },
+  {
+   "number": 23,
+   "slug": "023",
+   "date": "2026-11-22",
+   "topic": "هندسة البرمجيات",
+   "minutes": 7,
+   "keyword": "غُبـــار",
+   "title": "TODO منسية، فاتورة حقيقية",
+   "subtitle": "دراسة من Google تكشف إن التعليقات القديمة في الكود تشتّت الـ agents وترفع استهلاكهم 77%، وهذي طريقة بسيطة تخلّون فيها كودكم أنظف وأرخص.",
+   "cover": "assets/covers/engineering.jpg"
   }
  ]
 }
