@@ -1,0 +1,111 @@
+    <div class="block">
+      <p class="opener">صباح الخير ☕ تخيلوا إن أول شي تكتبونه لميزة جديدة هو خبر إطلاقها، مو تذكرة <span class="en">Jira</span> ولا سطر كود، والميزة نفسها لسا ما انبنت. هذي طريقة أمازون من سنين، واليوم نفككها ونعطيكم قالب تبدون فيه.</p>
+      <div class="tldr">
+        <strong>الزبدة</strong>
+        <ul class="clean">
+          <li>الـ <span class="en">PR/FAQ</span>: بيان صحفي من صفحة وحدة كأن المنتج انطلق، وبعده أسئلة وأجوبة ما تزيد عن 5 صفحات.</li>
+          <li>حسب مؤلفي كتاب <span class="en">Working Backwards</span>، أغلب مبادرات أمازون الكبيرة من 2004 طلعت بهالطريقة.</li>
+          <li>أغلب الوثائق ما تنعتمد، وهذي ميزة مو عيب: تقتلون الفكرة الضعيفة على الورق بدل ما تقتلونها بعد الإطلاق.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="divider" aria-hidden="true">* * *</div>
+
+    <div class="block">
+      <h2>الإطار</h2>
+      <p>في نوفمبر 2006 كتب Werner Vogels، المدير التقني لأمازون، تدوينة يشرح فيها <span class="en">Working Backwards</span>: تبدون من العميل وترجعون للخلف لين توصلون لأقل تقنية تحتاجونها. ووصف أربع وثائق تنكتب قبل البناء:</p>
+      <ol class="steps">
+        <li><span><b>البيان الصحفي.</b> إعلان واضح ومختصر عن وش يسوي المنتج وليش يهم، من وجهة نظر العميل.</span></li>
+        <li><span><b>الأسئلة الشائعة.</b> تتوقعون أسئلة القارئ والمستخدم وتجاوبونها، ومنها: هالمنتج لأي شي يصلح؟</span></li>
+        <li><span><b>تجربة العميل.</b> كيف بيستخدمه فعلاً: نماذج للواجهة، أو أمثلة كود لو كان خدمة للمطورين.</span></li>
+        <li><span><b>دليل المستخدم.</b> الدليل اللي بيقرأه العميل: المفاهيم، وكيف يسوي، والمرجع. وإذا عندكم أكثر من نوع مستخدم، أكثر من دليل.</span></li>
+      </ol>
+      <p>مع الوقت صار اللب هو أول وثيقتين، واشتهر الاسم <span class="en">PR/FAQ</span>. وحسب Colin Bryar وBill Carr، اللي اشتغلوا في أمازون وألفوا الكتاب، البيان أقل من صفحة، والأسئلة ما تزيد عن 5 صفحات. وكتبوا: ما فيه جوائز للطول.</p>
+    </div>
+
+    <div class="divider" aria-hidden="true">* * *</div>
+
+    <div class="block">
+      <h2>نصّين في وثيقة وحدة</h2>
+      <div class="bites">
+        <div class="bite"><span class="tag">📰 Press Release</span><p><b>البيان:</b> يحدد مين العميل، ووش مشكلته، ووش الحل، ويقنعه إنه يجربه. لو ما أقنع القارئ يشتري، تعيدون كتابته. Bryar يسميه اختبار حقيقي للمنتج.</p></div>
+        <div class="bite"><span class="tag">🙋 External FAQ</span><p><b>أسئلة العملاء:</b> اللي بيسأله العميل أو الصحافة لو شافوا الخبر: كم السعر؟ كيف أبدأ؟ وش يصير لبياناتي؟</p></div>
+        <div class="bite"><span class="tag">🔒 Internal FAQ</span><p><b>أسئلة الفريق:</b> الجزء الأطول. الأسئلة الصعبة من أصحاب المصلحة: التكلفة، وصعوبة البناء، والمخاطر، وحجم السوق.</p></div>
+      </div>
+      <p>والاجتماع نفسه له طقوس: ساعة وحدة، تبدأ بقراءة صامتة للوثيقة، وبعدها ملاحظات عامة، والأكبر منصباً يتكلم آخر واحد عشان ما يأثر على الباقين. وبعدها نقاش سطر بسطر، وصاحب الوثيقة يرسل محضر الاجتماع.</p>
+    </div>
+
+    <div class="divider" aria-hidden="true">* * *</div>
+
+    <div class="block">
+      <h2>ليش يهم؟</h2>
+      <p>Jennifer Cast، الموظفة رقم 25 في أمازون، حكت لـ GeekWire عن خدمة اسمها BookMatcher، تقترح كتب مخصصة لكل عميل. انبنت قبل ما تعتمد أمازون هالطريقة، وفشلت وانشالت. وتقول إنها لو مرت على الـ <span class="en">PR/FAQ</span> كان ماتت على الورق بسرعة، أو تحولت لمنتج ثاني قبل ما ينكتب سطر كود.</p>
+      <div class="bignum"><span class="n">120</span><p>ساعة كتابة على الأقل، و12 مسودة، و10 ساعات اجتماعات، على مدى أكثر من 6 أسابيع: هذا اللي أخذته وثيقة Cast لمكتبات Amazon Books.</p></div>
+      <p>الرقم يخوف، بس قارنوه بتكلفة بناء متجر حقيقي وفشله. وBryar يقول إن أغلب الوثائق ما تنعتمد، ويعتبر هذا ميزة مو عيب، لأن الفلترة على الورق توفر وقت المهندسين للأفكار الأقوى.</p>
+      <blockquote>تعديل مستند أرخص بكثير من إعادة بناء منتج.</blockquote>
+    </div>
+
+    <div class="divider" aria-hidden="true">* * *</div>
+
+    <div class="block">
+      <h2>قالب جاهز</h2>
+      <p>جربوه على أقرب ميزة كبيرة عندكم. البيان صفحة وحدة بالكثير، واكتبوه بلغة العميل، مو بلغة الفريق:</p>
+<pre>PRESS RELEASE   (date: launch day, written today)
+  Headline: __________________________________
+  Customer: who exactly? ______________________
+  Problem:  in their words ____________________
+  Solution: what changes for them _____________
+  Why now / why better than today: ____________
+  How to start: _______________________________
+
+EXTERNAL FAQ   (customers & press)
+  Q: How much?          A: ______
+  Q: How do I start?    A: ______
+  Q: ______________     A: ______
+
+INTERNAL FAQ   (the hard ones)
+  Q: How big is the market?        A: ______
+  Q: What will it cost to build?   A: ______
+  Q: Biggest risk?                 A: ______
+  Q: What are we NOT doing?        A: ______
+
+DECISION:  green / red / rewrite</pre>
+      <div class="note">نصيحة من Bryar: وروا المسودات بدري ولأكثر من شخص، وتوقعوا كذا جولة قبل القرار. وإذا الفوائد في البيان ما تبان فوائد حقيقية، كملوا تعديل لين تبان، أو اعتبروها إشارة إن الفكرة نفسها تحتاج تتغير.</div>
+    </div>
+
+    <div class="divider" aria-hidden="true">* * *</div>
+
+    <div class="block">
+      <h2>مصطلح اليوم</h2>
+      <div class="box fill">
+        <span class="cap">Working Backwards</span>
+        <p>إنكم تبدون من تجربة العميل النهائية وترجعون منها للخلف: وش لازم يكون صحيح عشان نوصل لها؟ بدل ما تبدون من التقنية اللي عندكم وتدورون لها أحد يستخدمها.</p>
+      </div>
+    </div>
+
+    <div class="divider" aria-hidden="true">* * *</div>
+
+    <div class="block">
+      <h2>سؤال لفريقكم</h2>
+      <p class="question">لو كتبنا اليوم خبر إطلاق الميزة اللي نشتغل عليها، هل بيقنع عميل واحد يجربها؟ وإذا لا، ليش للحين نبنيها؟</p>
+    </div>
+
+    <div class="divider" aria-hidden="true">* * *</div>
+
+    <div class="block sources">
+      <h2>المصادر</h2>
+      <ol>
+        <li><a href="https://www.allthingsdistributed.com/2006/11/working_backwards.html">Werner Vogels: Working Backwards (All Things Distributed, Nov 2006)</a></li>
+        <li><a href="https://www.aboutamazon.com/news/workplace/an-insider-look-at-amazons-culture-and-processes">About Amazon: An insider look at Amazon's culture and processes (Bryar &amp; Carr)</a></li>
+        <li><a href="https://docs.superhuman.com/@colin-bryar/working-backwards-how-write-an-amazon-pr-faq">Colin Bryar: Working Backwards, how to write an Amazon PR/FAQ</a></li>
+        <li><a href="https://www.geekwire.com/2021/working-backwards-customer-inside-amazons-strategy-launch-new-products/">GeekWire: Inside Amazon's strategy to launch new products (Jennifer Cast)</a></li>
+      </ol>
+    </div>
+
+    <div class="divider" aria-hidden="true">* * *</div>
+
+    <div class="block">
+      <div class="tags"><span>إدارة المنتجات</span><span>PR/FAQ</span><span>أمازون</span><span>الكتابة</span></div>
+      <p class="signoff">نشوفكم بكرة الساعة 8 مع جرعة جديدة. يومكم سعيد 🤍<br><b>جرعة</b></p>
+    </div>
