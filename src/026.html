@@ -1,0 +1,122 @@
+    <div class="block">
+      <p class="opener">صباح الخير ☕ من 30 سبتمبر، في أربع دول، صار Android يسأل كل تطبيق قبل ما ينزل: مين صاحبك؟ وفي 2027 بيسأل هالسؤال في كل مكان. اللي يجهز من الحين يمرّ بهدوء، واللي يتأخر ممكن يكتشف إن تطبيقه ما ينزل.</p>
+      <div class="tldr">
+        <strong>الزبدة</strong>
+        <ul class="clean">
+          <li>الـ <span class="en">Android developer verification</span> يربط كل تطبيق بمطوّر هويته موثّقة، وبدأ تطبيقه في البرازيل وإندونيسيا وسنغافورة وتايلاند، والتوسع العالمي في 2027.</li>
+          <li>ثلاث خطوات: حساب، توثيق هوية، وتسجيل اسم الحزمة (<span class="en">package name</span>) مربوط بمفتاح التوقيع.</li>
+          <li>الـ <span class="en">ADB</span> ما تغيّر، والتثبيت من برّا المتجر باقي، لكن بخطوات أطول للتطبيقات غير المسجّلة.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="divider" aria-hidden="true">* * *</div>
+
+    <div class="block">
+      <h2>وش صار؟</h2>
+      <p>Google أعلنت المتطلب في أغسطس 2025، وفي 30 سبتمبر 2026 بدأ التطبيق الفعلي لمستخدمي أربع دول: البرازيل، وإندونيسيا، وسنغافورة، وتايلاند. في هالمرحلة النظام يفحص التثبيتات اللي تجي من متاجر محددة: Google Play، وGalaxy Store من Samsung، ومتاجر Xiaomi وOPPO وvivo وHonor وTranssion.</p>
+      <p>التطبيق اللي صاحبه ما وثّق هويته ولا سجّل تطبيقاته ما ينزل من هالمتاجر على الأجهزة المعتمدة (<span class="en">certified Android devices</span>) في هالدول. والخطة المعلنة إن الحماية تتوسع عالمياً لكل التطبيقات على الأجهزة المعتمدة في 2027.</p>
+      <p><b>ليش؟</b> حجة Google إن المحتالين يطلعون تطبيق خبيث جديد بهوية مجهولة كل ما انحذف القديم، وربط التطبيق بهوية حقيقية يكسر هالدورة. واستشهدت بتقرير لـ <span class="en">Global Anti-Scam Alliance</span> لسنة 2025: 57٪ من البالغين اللي شملهم الاستطلاع تعرّضوا لاحتيال خلال سنة، والخسائر قدّرها التقرير بـ 442 مليار دولار عالمياً.</p>
+    </div>
+
+    <div class="divider" aria-hidden="true">* * *</div>
+
+    <div class="block">
+      <h2>الأرقام</h2>
+      <div class="bites">
+        <div class="bite"><span class="tag">💵 25 دولار</span><p>رسوم حساب التوزيع الكامل في <span class="en">Android Developer Console</span>، مثل رسوم Play.</p></div>
+        <div class="bite"><span class="tag">📱 20 جهاز</span><p>حد حساب التوزيع المحدود: مجاني وبدون هوية حكومية، للطلاب والهواة.</p></div>
+        <div class="bite"><span class="tag">⏳ 24 ساعة</span><p>انتظار لمرة وحدة قبل ما يقدر المستخدم يفعّل تثبيت التطبيقات غير المسجّلة.</p></div>
+        <div class="bite"><span class="tag">🤖 Android 8+</span><p>المتطلب يشمل كل جهاز معتمد على <span class="en">API 26</span> وأعلى، ويوصل عبر <span class="en">Google Play services</span>.</p></div>
+      </div>
+    </div>
+
+    <div class="divider" aria-hidden="true">* * *</div>
+
+    <div class="block">
+      <h2>ثلاث طرق للتوزيع</h2>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th></th><th>توزيع كامل</th><th>توزيع محدود</th><th>بدون تسجيل</th></tr></thead>
+          <tbody>
+          <tr><td>لمين؟</td><td>الشركات والمطورين المحترفين</td><td>الطلاب والهواة والاستخدام الشخصي</td><td>اللي ما وثّقوا هويتهم</td></tr>
+          <tr><td>توثيق هوية؟</td><td>نعم</td><td>لا</td><td>لا</td></tr>
+          <tr><td>الوصول</td><td>أي متجر أو موقعكم</td><td>لين 20 جهاز بدعوة</td><td>أي قناة غير المتاجر اللي تشترط التوثيق</td></tr>
+          <tr><td>تجربة المستخدم</td><td>نفس اليوم بالضبط</td><td>يقبل دعوة منكم</td><td>لازم يفعّل الـ <span class="en">advanced flow</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>والـ <span class="en">advanced flow</span> مقصود إنه يكون بطيء: يفعّل المستخدم وضع المطور، ويأكد إن ما أحد يوجّهه، ويعيد تشغيل الجوال، وينتظر يوم كامل، وبعدها يتحقق ببصمته أو رقمه السري. بعدها يقدر يثبّت لمدة 7 أيام أو بشكل دائم، مع تحذير يظهر كل مرة.</p>
+    </div>
+
+    <div class="divider" aria-hidden="true">* * *</div>
+
+    <div class="block">
+      <h2>قبل وبعد</h2>
+      <p>للتطوير والتجربة على أجهزتكم، ما فيه أي تغيير. حسب الأسئلة الشائعة الرسمية، التثبيت بالـ <span class="en">ADB</span> ما يحتاج تسجيل وما عليه فترة انتظار:</p>
+<pre># شغلكم اليومي: نفس ما هو
+adb install app-debug.apk
+
+# الجديد: قبل التوزيع، تأكدوا إن مفتاح التوقيع عندكم ومحفوظ
+keytool -list -v -keystore release.jks -alias upload</pre>
+      <p>الفرق كله في التوزيع: تسجيل اسم الحزمة يعني إنكم ترفعون <span class="en">APK</span> موقّع بمفتاحكم الخاص يثبت إن التطبيق لكم. ولو ضاع المفتاح، Google تقولها صريحة: ما تقدرون تسجّلون الحزمة.</p>
+    </div>
+
+    <div class="divider" aria-hidden="true">* * *</div>
+
+    <div class="block">
+      <h2>قائمة الفحص هالأسبوع</h2>
+      <ul class="check">
+        <li><span><b>على Play فقط؟</b> افتحوا صفحة <span class="en">Android developer verification</span> في <span class="en">Play Console</span> وشوفوا حالة كل تطبيق. اللي يستخدم <span class="en">Play App Signing</span> يتسجّل تلقائياً.</span></li>
+        <li><span><b>توزعون برّا Play؟</b> سوّوا حساب في <span class="en">Android Developer Console</span>، ولو عندكم حساب Play استخدموه هو بدل حساب جديد.</span></li>
+        <li><span><b>شركة؟</b> جهزوا رقم <span class="en">D-U-N-S</span> من الحين، لأن إصداره ممكن يطوّل لين 28 يوم، وتوثيق موقع الشركة عبر <span class="en">Search Console</span>.</span></li>
+        <li><span><b>المفاتيح:</b> اجمعوا كل مفاتيح التوقيع لكل حزمة، وخزّنوها في نظام إدارة مفاتيح آمن. الـ <span class="en">console</span> يسمح بأكثر من مفتاح للحزمة الوحدة.</span></li>
+        <li><span><b>كل الأجهزة:</b> لو تنشرون على Play، لازم تتسجّل تطبيقاتكم على كل الأنواع (ساعات، تلفزيون…) مو الجوال بس.</span></li>
+        <li><span><b>الأتمتة:</b> عندكم تطبيقات كثيرة؟ فيه <span class="en">Console API</span> للتسجيل من خط الـ <span class="en">CI/CD</span>، و<span class="en">Status API</span> لفحص الحالة.</span></li>
+      </ul>
+    </div>
+
+    <div class="divider" aria-hidden="true">* * *</div>
+
+    <div class="block">
+      <h2>أداة اليوم: <span class="en">Android Studio Panda 4</span></h2>
+      <p>من إصدار Panda 4، لما تولّدون <span class="en">App Bundle</span> أو <span class="en">APK</span> موقّع، Android Studio يعرض لكم حالة تسجيل التطبيق مباشرة. يعني تكتشفون المشكلة وقت البناء، مو بعد ما يشتكي مستخدم إن التطبيق ما ينزل. إذا لسا على إصدار أقدم، هذا سبب كافي للترقية.</p>
+    </div>
+
+    <div class="divider" aria-hidden="true">* * *</div>
+
+    <div class="block">
+      <h2>خطأ شائع</h2>
+      <div class="mf">
+        <div class="myth"><small>الاعتقاد</small><b>«التطبيق مثبّت عند الناس من قبل، ما بيتأثر.»</b></div>
+        <div class="fact"><small>الواقع</small>حسب الأسئلة الشائعة، التطبيق غير المسجّل ما ينثبّت ولا يتحدّث إلا لو المستخدم مفعّل الـ <span class="en">advanced flow</span> أو عن طريق <span class="en">ADB</span>. يعني لو أوقف المستخدم الخيار، التحديثات تفشل. سجّلوا قبل ما توصل المرحلة لبلدكم.</div>
+      </div>
+      <p class="note">ملاحظة: تطبيقات الشركات الموزّعة عبر متجر المؤسسة على أجهزة مُدارة مستثناة، لكن Google تنصح بتسجيلها برضو عشان التثبيت من أي مصدر ثاني يمشي بسلاسة.</p>
+    </div>
+
+    <div class="divider" aria-hidden="true">* * *</div>
+
+    <div class="block">
+      <h2>سؤال اليوم</h2>
+      <p class="question">لو طلبنا منكم الحين مفتاح التوقيع لكل تطبيق نشرتوه، كم دقيقة تحتاجون عشان تلقونه؟</p>
+    </div>
+
+    <div class="divider" aria-hidden="true">* * *</div>
+
+    <div class="block sources">
+      <h2>المصادر</h2>
+      <ol>
+        <li><a href="https://developer.android.com/developer-verification/guides">Android Developers: Android developer verification</a></li>
+        <li><a href="https://developer.android.com/developer-verification/guides/faq">Android Developers: Developer verification FAQ</a></li>
+        <li><a href="https://android-developers.googleblog.com/2026/03/android-developer-verification.html">Android Developers Blog: Balancing openness and choice with safety (19 Mar 2026)</a></li>
+        <li><a href="https://support.google.com/android-developer-console/answer/16561738?hl=en">Android Developer Console Help: Understanding Android developer verification</a></li>
+        <li><a href="https://developer.android.com/studio/releases/past-releases/as-panda-4-release-notes">Android Studio Panda 4 release notes</a></li>
+      </ol>
+    </div>
+
+    <div class="divider" aria-hidden="true">* * *</div>
+
+    <div class="block">
+      <div class="tags"><span>تطوير التطبيقات</span><span>Android</span><span>Google Play</span><span>الأمان</span></div>
+      <p class="signoff">نشوفكم بكرة الساعة 8 مع جرعة جديدة. يومكم سعيد 🤍<br><b>جرعة</b></p>
+    </div>
