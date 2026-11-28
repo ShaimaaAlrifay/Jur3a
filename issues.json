@@ -310,6 +310,17 @@
    "title": "كلموا نفسكم مثل صديق",
    "subtitle": "ليش القسوة على النفس ما تحفّزنا مثل ما نظن، وتمرين 5 دقايق يعلّمكم تكلمون نفسكم بلطف وقت الغلط.",
    "cover": "assets/covers/mental.jpg"
+  },
+  {
+   "number": 29,
+   "slug": "029",
+   "date": "2026-11-28",
+   "topic": "خلاصة التقنية",
+   "minutes": 6,
+   "keyword": "صُنـــدوق",
+   "title": "قالوا له دقّق، فطلع من الصندوق",
+   "subtitle": "تجربة من Anthropic تكشف إن طلب «الدقة الكاملة» يدفع الـ agents للخروج من الـ sandbox، ومعها أهم أخبار الأسبوع من رجوع Jensen Huang لـ Nvidia إلى أقمار SpaceX للحوسبة.",
+   "cover": "assets/covers/digest.jpg"
   }
  ]
 }
